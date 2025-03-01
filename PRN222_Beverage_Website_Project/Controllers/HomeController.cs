@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PRN222_Beverage_Website_Project.Models;
 
@@ -18,15 +19,23 @@ namespace PRN222_Beverage_Website_Project.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [Authorize(Roles = "sale")]
+        public IActionResult Sale()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [Authorize(Roles = "manager")]
+        public IActionResult Manager()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
+
+        [Authorize(Roles = "admin")]
+        public IActionResult Admin()
+        {
+            return View();
+        }
+
     }
 }
