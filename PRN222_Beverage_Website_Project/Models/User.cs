@@ -6,7 +6,6 @@ namespace PRN222_Beverage_Website_Project.Models;
 
 public partial class User
 {
-    [Key]
     public int UserId { get; set; }
 
     [Required(ErrorMessage = "Tên người dùng là bắt buộc.")]

@@ -45,8 +45,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
     //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-    //        => optionsBuilder.UseSqlServer("server =(local); database = PRN222_Beverage_Website_Project;uid=sa;pwd=123;Trusted_Connection=True;Encrypt=False");
-
+    //        => optionsBuilder.UseSqlServer("server=(local);database=PRN222_Beverage_Website_Project;uid=sa;pwd=123;Trusted_Connection=True;Encrypt=False");
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -59,9 +58,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
     {
         modelBuilder.Entity<Like>(entity =>
         {
-            entity.Property(e => e.LikeId)
-                .ValueGeneratedNever()
-                .HasColumnName("LikeID");
+            entity.Property(e => e.LikeId).HasColumnName("LikeID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
@@ -78,9 +75,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.Property(e => e.OrderId)
-                .ValueGeneratedNever()
-                .HasColumnName("OrderID");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
@@ -111,9 +106,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
         modelBuilder.Entity<OrderItem>(entity =>
         {
-            entity.Property(e => e.OrderItemId)
-                .ValueGeneratedNever()
-                .HasColumnName("OrderItemID");
+            entity.Property(e => e.OrderItemId).HasColumnName("OrderItemID");
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.OrderItemPrice).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.ProductVariantId).HasColumnName("ProductVariantID");
@@ -131,9 +124,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.Property(e => e.ProductId)
-                .ValueGeneratedNever()
-                .HasColumnName("ProductID");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.ApprovedBy).HasColumnName("approved_by");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
@@ -164,9 +155,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
         modelBuilder.Entity<ProductSize>(entity =>
         {
-            entity.Property(e => e.ProductSizeId)
-                .ValueGeneratedNever()
-                .HasColumnName("ProductSizeID");
+            entity.Property(e => e.ProductSizeId).HasColumnName("ProductSizeID");
             entity.Property(e => e.ProductSizeName).HasMaxLength(50);
 
             entity.HasMany(d => d.Products).WithMany(p => p.ProductSizes)
@@ -184,16 +173,16 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
                     {
                         j.HasKey("ProductSizeId", "ProductId");
                         j.ToTable("ProductSizeProduct");
-                        j.IndexerProperty<int>("ProductSizeId").HasColumnName("ProductSizeID");
+                        j.IndexerProperty<int>("ProductSizeId")
+                            .ValueGeneratedOnAdd()
+                            .HasColumnName("ProductSizeID");
                         j.IndexerProperty<int>("ProductId").HasColumnName("ProductID");
                     });
         });
 
         modelBuilder.Entity<ProductVariant>(entity =>
         {
-            entity.Property(e => e.ProductVariantId)
-                .ValueGeneratedNever()
-                .HasColumnName("ProductVariantID");
+            entity.Property(e => e.ProductVariantId).HasColumnName("ProductVariantID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.ProductSizeId).HasColumnName("ProductSizeID");
             entity.Property(e => e.ProductVariantPrice).HasColumnType("decimal(10, 2)");
@@ -213,9 +202,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
         {
             entity.ToTable("Review");
 
-            entity.Property(e => e.ReviewId)
-                .ValueGeneratedNever()
-                .HasColumnName("ReviewID");
+            entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
@@ -236,9 +223,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.Property(e => e.RoleId)
-                .ValueGeneratedNever()
-                .HasColumnName("RoleID");
+            entity.Property(e => e.RoleId).HasColumnName("RoleID");
             entity.Property(e => e.RoleName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -246,9 +231,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
         modelBuilder.Entity<Shop>(entity =>
         {
-            entity.Property(e => e.ShopId)
-                .ValueGeneratedNever()
-                .HasColumnName("ShopID");
+            entity.Property(e => e.ShopId).HasColumnName("ShopID");
             entity.Property(e => e.ApprovedBy).HasColumnName("approved_by");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
@@ -277,9 +260,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
         modelBuilder.Entity<ShopReview>(entity =>
         {
-            entity.Property(e => e.ShopReviewId)
-                .ValueGeneratedNever()
-                .HasColumnName("ShopReviewID");
+            entity.Property(e => e.ShopReviewId).HasColumnName("ShopReviewID");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
@@ -304,9 +285,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
             entity.ToTable("StatusOrder");
 
-            entity.Property(e => e.StatusOrderId)
-                .ValueGeneratedNever()
-                .HasColumnName("StatusOrderID");
+            entity.Property(e => e.StatusOrderId).HasColumnName("StatusOrderID");
             entity.Property(e => e.StatusOrderName).HasMaxLength(50);
         });
 
@@ -314,9 +293,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
         {
             entity.ToTable("StatusProduct");
 
-            entity.Property(e => e.StatusProductId)
-                .ValueGeneratedNever()
-                .HasColumnName("StatusProductID");
+            entity.Property(e => e.StatusProductId).HasColumnName("StatusProductID");
             entity.Property(e => e.StatusProductName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -326,9 +303,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
         {
             entity.ToTable("StatusShop");
 
-            entity.Property(e => e.StatusShopId)
-                .ValueGeneratedNever()
-                .HasColumnName("StatusShopID");
+            entity.Property(e => e.StatusShopId).HasColumnName("StatusShopID");
             entity.Property(e => e.StatusShopName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -336,9 +311,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.Property(e => e.UserId)
-                .ValueGeneratedNever()
-                .HasColumnName("UserID");
+            entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");

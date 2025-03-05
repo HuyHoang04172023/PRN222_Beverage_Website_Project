@@ -14,6 +14,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly UserService _userService;
+        private readonly RoleService _roleService;
         private readonly ILogger<UserController> _logger;
         private readonly Prn222BeverageWebsiteProjectContext _dbContext;
 
@@ -22,6 +23,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
             _logger = logger;
             _configuration = configuration;
             _userService = new UserService();
+            _roleService = new RoleService();
             _dbContext = new Prn222BeverageWebsiteProjectContext();
         }
 
@@ -38,35 +40,26 @@ namespace PRN222_Beverage_Website_Project.Controllers
         public ActionResult Register(User model)
         {
             ModelState.Remove("Role");
-            ModelState.Remove("UserId");
-
-            Console.WriteLine("UserID: " + model.UserId);
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Kiểm tra xem email đã tồn tại chưa
-                if (_userService.CheckEMailExist(model.Email))
-                {
-                    ModelState.AddModelError("Email", "Email đã được sử dụng.");
-                    return View(model);
-                }
-
-                // Mã hóa mật khẩu trước khi lưu vào database
-                model.Password = HashPassword(model.Password);
-                model.CreatedAt = DateTime.Now;
-
-                model.RoleId = 1;
-
-                Console.WriteLine("UserID (Trước khi lưu vào DB): " + model.UserId);  // In ra UserID trước khi lưu
-                model.UserId = 0;
-                // Thêm người dùng mới vào database
-                _userService.AddUser(model);
-
-                return Redirect("/login");
+                return View(model);
             }
 
-            return View(model);
+            if (_userService.CheckEMailExist(model.Email))
+            {
+                ModelState.AddModelError("Email", "Email đã được sử dụng.");
+                return View(model);
+            }
+
+            model.Password = HashPassword(model.Password);
+            model.CreatedAt = DateTime.Now;
+            model.RoleId = _roleService.GetRoleIdByRoleName("user") ?? 2;
+
+            _userService.AddUser(model);
+
+            return RedirectToAction("Login", "User");
         }
+
 
         private string HashPassword(string password)
         {

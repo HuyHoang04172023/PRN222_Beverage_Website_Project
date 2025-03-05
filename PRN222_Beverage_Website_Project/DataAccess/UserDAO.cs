@@ -13,7 +13,7 @@ namespace PRN222_Beverage_Website_Project.DataAccess
 
         public List<User> GetUsers() => _context.Users.ToList();
 
-        public User CheckUserLogin(string email, string password)
+        public User? CheckUserLogin(string email, string password)
         {
             return _context.Users
                      .Include(u => u.Role)
