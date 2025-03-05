@@ -50,5 +50,7 @@ app.MapControllerRoute(name: "admin", pattern: "admin", defaults: new { controll
 app.MapControllerRoute(name: "login", pattern: "login", defaults: new { controller = "User", action = "Login" });
 app.MapControllerRoute(name: "logout", pattern: "logout", defaults: new { controller = "User", action = "Logout" });
 app.MapControllerRoute(name: "AccessDenied", pattern: "AccessDenied", defaults: new { controller = "User", action = "AccessDenied" });
+app.MapControllerRoute(name: "register", pattern: "register", defaults: new { controller = "User", action = "Register" });
+
 
 app.Run();

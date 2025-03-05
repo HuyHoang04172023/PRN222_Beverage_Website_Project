@@ -20,5 +20,17 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             return _repository.CheckUserLogin(email, password);
         }
+
+        public bool CheckEMailExist(string email)
+        {
+            return _repository.CheckEMailExist(email);
+        }
+
+        public void AddUser(User user)
+        {
+            _repository.AddUser(user);
+        }
+
+        
     }
 }

@@ -6,5 +6,7 @@ namespace PRN222_Beverage_Website_Project.Services
     {
         public List<User> GetUsers();
         public User CheckUserLogin(string email, string password);
+        public bool CheckEMailExist(string email);
+        public void AddUser(User user);
     }
 }
