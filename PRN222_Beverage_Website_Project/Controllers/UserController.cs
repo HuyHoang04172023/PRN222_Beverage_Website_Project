@@ -128,6 +128,8 @@ namespace PRN222_Beverage_Website_Project.Controllers
                     return Redirect("/sale");
                 case "manager":
                     return Redirect("/manager");
+                case "user":
+                    return Redirect("/user");
                 default:
                     return Redirect("/");
             }

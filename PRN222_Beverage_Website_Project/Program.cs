@@ -44,6 +44,7 @@ app.MapControllers();  // Mapping các controllers
 
 // Các route định nghĩa cho các controller và action
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "user", pattern: "user", defaults: new { controller = "Home", action = "User" });
 app.MapControllerRoute(name: "sale", pattern: "sale", defaults: new { controller = "Home", action = "Sale" });
 app.MapControllerRoute(name: "manager", pattern: "manager", defaults: new { controller = "Home", action = "Manager" });
 app.MapControllerRoute(name: "admin", pattern: "admin", defaults: new { controller = "Home", action = "Admin" });

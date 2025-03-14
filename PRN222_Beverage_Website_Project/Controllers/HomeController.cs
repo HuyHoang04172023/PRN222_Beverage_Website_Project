@@ -19,6 +19,12 @@ namespace PRN222_Beverage_Website_Project.Controllers
             return View();
         }
 
+        [Authorize(Roles = "user")]
+        public IActionResult User()
+        {
+            return View();
+        }
+
         [Authorize(Roles = "sale")]
         public IActionResult Sale()
         {
