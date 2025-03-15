@@ -14,7 +14,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly UserService _userService;
-        private readonly RoleService _roleService;
+        private readonly ConfigDataService _configDataService;
         private readonly ILogger<UserController> _logger;
         private readonly Prn222BeverageWebsiteProjectContext _dbContext;
 
@@ -23,7 +23,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
             _logger = logger;
             _configuration = configuration;
             _userService = new UserService();
-            _roleService = new RoleService();
+            _configDataService = new ConfigDataService();
             _dbContext = new Prn222BeverageWebsiteProjectContext();
         }
 
@@ -53,7 +53,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
             model.Password = HashPassword(model.Password);
             model.CreatedAt = DateTime.Now;
-            model.RoleId = _roleService.GetRoleIdByRoleName("user") ?? 2;
+            model.RoleId = _configDataService.GetRoleIdByRoleName("user") ?? 2;
 
             _userService.AddUser(model);
 
@@ -74,13 +74,6 @@ namespace PRN222_Beverage_Website_Project.Controllers
                 return stringBuilder.ToString();
             }
         }
-
-
-
-
-
-
-
 
 
         [HttpGet]

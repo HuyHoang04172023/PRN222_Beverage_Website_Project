@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PRN222_Beverage_Website_Project.Models;
@@ -9,13 +10,18 @@ namespace PRN222_Beverage_Website_Project.Controllers
     public class ShopController : Controller
     {
         private readonly ShopService _shopService;
+        private readonly ConfigDataService _configDataService;
         private readonly IImageService _imageService;
 
         public ShopController(IImageService imageService)
         {
             _shopService = new ShopService();
+            _configDataService = new ConfigDataService();
             _imageService = imageService;
         }
+
+        [HttpGet]
+        [Authorize(Roles = "user")]
         public IActionResult Create()
         {
             return View();
@@ -23,27 +29,13 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> Create(Shop shop, IFormFile shopImageFile)
         {
             ModelState.Remove("ShopImage");
             ModelState.Remove("StatusShop");
             ModelState.Remove("CreatedByNavigation");
-            if (!ModelState.IsValid)
-            {
-                // Debug: In ra tất cả lỗi trong ModelState
-                var errors = ModelState
-                    .Where(x => x.Value.Errors.Count > 0)
-                    .Select(x => new { x.Key, x.Value.Errors })
-                    .ToList();
-                foreach (var error in errors)
-                {
-                    foreach (var detail in error.Errors)
-                    {
-                        Console.WriteLine($"Property: {error.Key}, Error: {detail.ErrorMessage}");
-                    }
-                }
-                return View(shop); // Trả về View để xem lỗi
-            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -58,16 +50,15 @@ namespace PRN222_Beverage_Website_Project.Controllers
                         return View(shop);
                     }
 
-                    shop.StatusShopId = 1; // Trạng thái mặc định
+                    shop.StatusShopId = _configDataService.GetStatusShopIdByStatusShopName("pending") ?? 10; // Trạng thái mặc định
 
 
-                    var userId = User.FindFirstValue("UserID"); // Lấy UserID dưới dạng string
+                    var userId = User.FindFirstValue("UserID");
                     if (userId != null)
                     {
                         shop.CreatedBy = int.Parse(userId);
                     }
 
-                    // Gán các giá trị mặc định
                     shop.CreatedAt = DateTime.UtcNow;
 
                     _shopService.AddShop(shop);
@@ -75,7 +66,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
                 }
                 catch (ArgumentException ex)
                 {
-                    ModelState.AddModelError("", ex.Message); // Hiển thị lỗi từ ImageService
+                    ModelState.AddModelError("", ex.Message);
                 }
                 catch (Exception ex)
                 {

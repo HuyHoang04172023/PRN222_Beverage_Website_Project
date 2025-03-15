@@ -13,20 +13,8 @@ namespace PRN222_Beverage_Website_Project.DataAccess
 
         public void AddShop(Shop shop)
         {
-            
-            try
-            {
-                _context.Shops.Add(shop);
-                _context.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-                Console.WriteLine("Error saving shop: " + ex.Message);
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
-                }
-            }
+            _context.Shops.Add(shop);
+            _context.SaveChanges();
         }
     }
 }

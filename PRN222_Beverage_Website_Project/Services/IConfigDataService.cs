@@ -1,7 +1,8 @@
 ﻿namespace PRN222_Beverage_Website_Project.Services
 {
-    public interface IRoleService
+    public interface IConfigDataService
     {
         public int? GetRoleIdByRoleName(string roleName);
+        public int? GetStatusShopIdByStatusShopName(string statusShopName);
     }
 }
