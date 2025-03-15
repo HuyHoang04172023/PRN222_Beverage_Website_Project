@@ -1,0 +1,45 @@
+﻿@model PRN222_Beverage_Website_Project.Models.Shop
+
+@{
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+    ViewBag.Title = "Tạo Cửa Hàng";
+}
+
+<h2>Create New Shop</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="ShopName" class="control-label">Shop Name</label>
+        <input asp-for="ShopName" class="form-control" />
+        <span asp-validation-for="ShopName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ShopAddress" class="control-label">Shop Address</label>
+        <input asp-for="ShopAddress" class="form-control" />
+        <span asp-validation-for="ShopAddress" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ShopImage" class="control-label">Shop Image</label>
+        <input type="file" name="shopImageFile" class="form-control" />
+        <span class="text-danger">@ViewData["ImageError"]</span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ShopDescription" class="control-label">Shop Description</label>
+        <textarea asp-for="ShopDescription" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="ShopDescription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <a href="/user" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

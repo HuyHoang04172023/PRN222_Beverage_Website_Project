@@ -53,5 +53,9 @@ app.MapControllerRoute(name: "logout", pattern: "logout", defaults: new { contro
 app.MapControllerRoute(name: "AccessDenied", pattern: "AccessDenied", defaults: new { controller = "User", action = "AccessDenied" });
 app.MapControllerRoute(name: "register", pattern: "register", defaults: new { controller = "User", action = "Register" });
 
+//Route for Shop
+app.MapControllerRoute(name: "CteateShop", pattern: "/shop/create", defaults: new { controller = "Shop", action = "Create" });
+
+
 
 app.Run();
