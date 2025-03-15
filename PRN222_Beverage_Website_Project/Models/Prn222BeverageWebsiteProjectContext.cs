@@ -173,9 +173,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
                     {
                         j.HasKey("ProductSizeId", "ProductId");
                         j.ToTable("ProductSizeProduct");
-                        j.IndexerProperty<int>("ProductSizeId")
-                            .ValueGeneratedOnAdd()
-                            .HasColumnName("ProductSizeID");
+                        j.IndexerProperty<int>("ProductSizeId").HasColumnName("ProductSizeID");
                         j.IndexerProperty<int>("ProductId").HasColumnName("ProductID");
                     });
         });
@@ -233,7 +231,9 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
         {
             entity.Property(e => e.ShopId).HasColumnName("ShopID");
             entity.Property(e => e.ApprovedBy).HasColumnName("approved_by");
-            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.ShopAddress).HasMaxLength(50);
             entity.Property(e => e.ShopDescription).HasMaxLength(50);
@@ -319,7 +319,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Password)
-                .HasMaxLength(50)
+                .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.RoleId).HasColumnName("RoleID");
             entity.Property(e => e.UserName)

@@ -6,8 +6,9 @@
 }
 
 <h2>Create New Shop</h2>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
+<form asp-action="Create" asp-controller="Shop" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="ShopName" class="control-label">Shop Name</label>
         <input asp-for="ShopName" class="form-control" />
