@@ -45,7 +45,7 @@ app.UseSession();         // Nếu dùng session
 app.MapControllers();  // Mapping các controllers
 
 // Các route định nghĩa cho các controller và action
-app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/");
 app.MapControllerRoute(name: "user", pattern: "user", defaults: new { controller = "Home", action = "User" });
 app.MapControllerRoute(name: "sale", pattern: "sale", defaults: new { controller = "Home", action = "Sale" });
 app.MapControllerRoute(name: "manager", pattern: "manager", defaults: new { controller = "Home", action = "Manager" });
@@ -56,8 +56,9 @@ app.MapControllerRoute(name: "AccessDenied", pattern: "AccessDenied", defaults: 
 app.MapControllerRoute(name: "register", pattern: "register", defaults: new { controller = "User", action = "Register" });
 
 //Route for Shop
-app.MapControllerRoute(name: "CteateShop", pattern: "/shop/create", defaults: new { controller = "Shop", action = "Create" });
-
+app.MapControllerRoute(name: "CreateShop", pattern: "shop/create", defaults: new { controller = "Shop", action = "Create" });
+app.MapControllerRoute(name: "UpdateShop", pattern: "shop/update/{shopId}", defaults: new { controller = "Shop", action = "Update" });
+app.MapControllerRoute(name: "DeleteShop", pattern: "shop/delete/{shopId}", defaults: new { controller = "Shop", action = "Delete" });
 
 
 app.Run();

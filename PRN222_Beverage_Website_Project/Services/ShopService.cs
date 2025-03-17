@@ -14,10 +14,23 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             _repository.AddShop(shop);
         }
+        public void UpdateShop(Shop updatedShop)
+        {
+            _repository.UpdateShop(updatedShop);
+        }
+        public void DeleteShop(int shopId)
+        {
+            _repository.DeleteShop(shopId);
+        }
 
         public Shop? GetShopByUserID(int userId)
         {
             return _repository.GetShopByUserID(userId);
+        }
+
+        public Shop? GetShopByShopID(int shopID)
+        {
+            return _repository.GetShopByShopID(shopID);
         }
     }
 }

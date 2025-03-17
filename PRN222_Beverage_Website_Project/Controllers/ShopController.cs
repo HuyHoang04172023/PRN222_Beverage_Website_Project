@@ -49,7 +49,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
                 {
                     foreach (var error in modelState.Errors)
                     {
-                        Console.WriteLine(error.ErrorMessage); // Hoặc log lỗi vào file/log system
+                        Console.WriteLine(error.ErrorMessage);
                     }
                 }
             }
@@ -94,6 +94,106 @@ namespace PRN222_Beverage_Website_Project.Controllers
                 }
             }
             return View(shopView);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "user")]
+        public IActionResult Update(int shopId)
+        {
+            var userId = User.FindFirstValue("UserID");
+            Shop shop = _shopService.GetShopByShopID(shopId);
+
+            if (shop == null)
+            {
+                return NotFound("Cửa hàng không tồn tại.");
+            }
+
+            if (shop.CreatedBy != int.Parse(userId))
+            {
+                return View("~/Views/User/AccessDenied.cshtml");
+            }
+
+            var shopView = new ShopViewModel
+            {
+                ShopId = shop.ShopId,
+                ShopName = shop.ShopName,
+                ShopAddress = shop.ShopAddress,
+                ShopImage = shop.ShopImage,
+                ShopDescription = shop.ShopDescription
+            };
+            return View(shopView);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "user")]
+        public async Task<IActionResult> Update(ShopViewModel shopView, IFormFile shopImageFile)
+        {
+            ModelState.Remove("ShopImage");
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Shop shop = new Shop();
+                    if (shopImageFile != null && shopImageFile.Length > 0)
+                    {
+                        shop.ShopImage = await _imageService.SaveImageAsync(shopImageFile, "shops");
+                    }
+                    else
+                    {
+                        ViewData["ImageError"] = "Please upload an image.";
+                        return View(shop);
+                    }
+                    shop.ShopId = shopView.ShopId;
+                    shop.ShopName = shopView.ShopName;
+                    shop.ShopAddress = shopView.ShopAddress;
+                    shop.ShopDescription = shopView.ShopDescription;
+
+                    _shopService.UpdateShop(shop);
+                    return Redirect("/user");
+                }
+                catch (ArgumentException ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Error saving shop: {ex.Message}");
+                }
+            }
+            return View(shopView);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "user")]
+        public IActionResult Delete(int shopId)
+        {
+            var userId = User.FindFirstValue("UserID");
+            Shop shop = _shopService.GetShopByShopID(shopId);
+
+            if (shop == null)
+            {
+                return NotFound("Cửa hàng không tồn tại.");
+            }
+
+            if (shop.CreatedBy != int.Parse(userId))
+            {
+                return View("~/Views/User/AccessDenied.cshtml");
+            }
+
+            _shopService.DeleteShop(shopId);
+            return Redirect("/user");
         }
     }
 }

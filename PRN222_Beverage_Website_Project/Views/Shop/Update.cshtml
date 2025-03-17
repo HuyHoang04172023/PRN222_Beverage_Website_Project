@@ -1,0 +1,65 @@
+﻿@model PRN222_Beverage_Website_Project.ModelViews.ShopViewModel
+
+@{
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+    ViewBag.Title = "Cập Nhật Cửa Hàng";
+}
+
+<h2>Cập Nhật Cửa Hàng</h2>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-action="Update" asp-controller="Shop" method="post" enctype="multipart/form-data">
+    <input asp-for="ShopId" type="hidden" class="form-control" value="@Model.ShopId" />
+
+    <div class="form-group">
+        <label asp-for="ShopName" class="control-label">Tên Cửa Hàng</label>
+        <input asp-for="ShopName" class="form-control" value="@Model.ShopName" />
+        <span asp-validation-for="ShopName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ShopAddress" class="control-label">Địa Chỉ Cửa Hàng</label>
+        <input asp-for="ShopAddress" class="form-control" value="@Model.ShopAddress" />
+        <span asp-validation-for="ShopAddress" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ShopImage" class="control-label">Logo Cửa Hàng</label>
+        <img id="previewImage" src="@Model.ShopImage" style="max-width: 100px; margin-top: 10px; display: block;">
+        <input type="file" id="shopImageFile" name="shopImageFile" class="form-control" />
+        <span class="text-danger">@ViewData["ImageError"]</span>
+        <span asp-validation-for="ShopImage" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ShopDescription" class="control-label">Mô Tả Cửa Hàng</label>
+        <textarea asp-for="ShopDescription" class="form-control" rows="4" value="@Model.ShopDescription"></textarea>
+        <span asp-validation-for="ShopDescription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Cập Nhật" class="btn btn-primary" />
+        <a href="/user" class="btn btn-secondary">Hủy</a>
+    </div>
+</form>
+
+<script>
+    document.getElementById("shopImageFile").addEventListener("change", function(event) {
+        const file = event.target.files[0]; // Lấy file đầu tiên trong input
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById("previewImage");
+                img.src = e.target.result; // Gán URL của ảnh vào src
+                img.style.display = "block"; // Hiển thị ảnh
+            };
+            reader.readAsDataURL(file); // Đọc file dưới dạng URL
+        }
+    });
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

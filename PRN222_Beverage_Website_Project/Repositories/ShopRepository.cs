@@ -14,10 +14,21 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             _dao.AddShop(shop);
         }
-
+        public void UpdateShop(Shop updatedShop)
+        {
+            _dao.UpdateShop(updatedShop);
+        }
+        public void DeleteShop(int shopId)
+        {
+            _dao.DeleteShop(shopId);
+        }
         public Shop? GetShopByUserID(int userId)
         {
             return _dao.GetShopByUserID(userId);
+        }
+        public Shop? GetShopByShopID(int shopID)
+        {
+            return _dao.GetShopByShopID(shopID);
         }
     }
 }
