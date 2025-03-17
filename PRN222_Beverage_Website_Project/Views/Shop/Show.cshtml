@@ -1,0 +1,147 @@
+﻿@model PRN222_Beverage_Website_Project.Models.Shop
+
+<div class="shop-details-container">
+    <div class="shop-header">
+        <h1>@Model.ShopName</h1>
+
+        <div class="shop-actions">
+            <a href="/Shop/Edit/@Model.ShopId" class="edit-btn" title="Edit">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="#" class="delete-btn" title="Delete" onclick="confirmDelete(@Model.ShopId)">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="shop-status">
+        <span class="status-label">Status:</span> <span class="status-value">@Model.StatusShop?.StatusShopName</span>
+    </div>
+
+    <div class="shop-image">
+        <img src="@Model.ShopImage" alt="@Model.ShopName" class="img-fluid" />
+    </div>
+
+    <div class="shop-info">
+        <div class="info-item">
+            <label>Address:</label>
+            <span>@Model.ShopAddress</span>
+        </div>
+
+        <div class="info-item">
+            <label>Description:</label>
+            <p>@Model.ShopDescription</p>
+        </div>
+
+        <div class="info-item">
+            <label>Created At:</label>
+            <span>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    .shop-details-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #ffffff;
+        position: relative;
+    }
+
+    .shop-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+    .shop-actions {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        gap: 10px;
+    }
+
+    .shop-status {
+        background-color: #ffeb3b;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .shop-image {
+        margin-bottom: 20px;
+    }
+
+        .shop-image img {
+            max-width: 100px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+    .shop-info {
+        margin-bottom: 20px;
+    }
+
+    .info-item {
+        margin: 10px 0;
+    }
+
+        .info-item label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+    .edit-btn, .delete-btn {
+        text-decoration: none;
+        font-size: 20px;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .edit-btn {
+        color: #007bff;
+    }
+
+    .delete-btn {
+        color: #dc3545;
+    }
+
+    .edit-btn:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .delete-btn:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmDelete(shopId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `/Shop/Delete/${shopId}`;
+            }
+        });
+    }
+</script>

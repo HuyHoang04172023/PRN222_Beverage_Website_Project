@@ -1,4 +1,4 @@
-﻿@model PRN222_Beverage_Website_Project.Models.Shop
+﻿@model PRN222_Beverage_Website_Project.ModelViews.ShopViewModel
 
 @{
     Layout = "~/Views/Shared/UserLayout.cshtml";
@@ -25,6 +25,7 @@
         <label asp-for="ShopImage" class="control-label">Shop Image</label>
         <input type="file" name="shopImageFile" class="form-control" />
         <span class="text-danger">@ViewData["ImageError"]</span>
+        <span asp-validation-for="ShopImage" class="text-danger"></span>
     </div>
 
     <div class="form-group">

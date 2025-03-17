@@ -5,5 +5,6 @@ namespace PRN222_Beverage_Website_Project.Services
     public interface IShopService
     {
         public void AddShop(Shop shop);
+        public Shop? GetShopByUserID(int userId);
     }
 }

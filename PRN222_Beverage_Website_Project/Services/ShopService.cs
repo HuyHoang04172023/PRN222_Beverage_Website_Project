@@ -14,5 +14,10 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             _repository.AddShop(shop);
         }
+
+        public Shop? GetShopByUserID(int userId)
+        {
+            return _repository.GetShopByUserID(userId);
+        }
     }
 }

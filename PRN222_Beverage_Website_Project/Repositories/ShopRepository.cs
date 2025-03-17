@@ -14,5 +14,10 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             _dao.AddShop(shop);
         }
+
+        public Shop? GetShopByUserID(int userId)
+        {
+            return _dao.GetShopByUserID(userId);
+        }
     }
 }

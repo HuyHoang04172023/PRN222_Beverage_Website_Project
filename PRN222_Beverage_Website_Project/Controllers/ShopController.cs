@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PRN222_Beverage_Website_Project.Models;
+using PRN222_Beverage_Website_Project.ModelViews;
 using PRN222_Beverage_Website_Project.Services;
 
 namespace PRN222_Beverage_Website_Project.Controllers
@@ -24,22 +25,39 @@ namespace PRN222_Beverage_Website_Project.Controllers
         [Authorize(Roles = "user")]
         public IActionResult Create()
         {
-            return View();
+            var userId = User.FindFirstValue("UserID");
+            Shop shop = _shopService.GetShopByUserID(int.Parse(userId));
+            if(shop != null)
+            {
+                return View("Show", shop);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "user")]
-        public async Task<IActionResult> Create(Shop shop, IFormFile shopImageFile)
+        public async Task<IActionResult> Create(ShopViewModel shopView, IFormFile shopImageFile)
         {
             ModelState.Remove("ShopImage");
-            ModelState.Remove("StatusShop");
-            ModelState.Remove("CreatedByNavigation");
-
+            if (!ModelState.IsValid)
+            {
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage); // Hoặc log lỗi vào file/log system
+                    }
+                }
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
+                    Shop shop = new Shop();
                     if (shopImageFile != null && shopImageFile.Length > 0)
                     {
                         shop.ShopImage = await _imageService.SaveImageAsync(shopImageFile, "shops");
@@ -50,8 +68,10 @@ namespace PRN222_Beverage_Website_Project.Controllers
                         return View(shop);
                     }
 
-                    shop.StatusShopId = _configDataService.GetStatusShopIdByStatusShopName("pending") ?? 10; // Trạng thái mặc định
-
+                    shop.ShopName = shopView.ShopName;
+                    shop.ShopAddress = shopView.ShopAddress;
+                    shop.ShopDescription = shopView.ShopDescription;
+                    shop.StatusShopId = _configDataService.GetStatusShopIdByStatusShopName("pending") ?? 10;
 
                     var userId = User.FindFirstValue("UserID");
                     if (userId != null)
@@ -73,7 +93,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
                     ModelState.AddModelError("", $"Error saving shop: {ex.Message}");
                 }
             }
-            return View(shop);
+            return View(shopView);
         }
     }
 }

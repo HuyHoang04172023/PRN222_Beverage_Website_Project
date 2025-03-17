@@ -19,7 +19,7 @@ public partial class Shop
 
     public int CreatedBy { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } 
 
     public int? ApprovedBy { get; set; }
 

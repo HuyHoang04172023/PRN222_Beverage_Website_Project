@@ -16,5 +16,13 @@ namespace PRN222_Beverage_Website_Project.DataAccess
             _context.Shops.Add(shop);
             _context.SaveChanges();
         }
+
+        public Shop? GetShopByUserID(int userId)
+        {
+            return _context.Shops
+                .Where(s => s.CreatedBy == userId)
+                .Include(s => s.StatusShop)
+                .FirstOrDefault();
+        }
     }
 }
