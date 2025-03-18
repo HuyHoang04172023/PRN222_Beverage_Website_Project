@@ -8,5 +8,6 @@ namespace PRN222_Beverage_Website_Project.Services
         public User CheckUserLogin(string email, string password);
         public bool CheckEMailExist(string email);
         public void AddUser(User user);
+        public void UpdateRoleIdOfUser(int userId, int roleId);
     }
 }

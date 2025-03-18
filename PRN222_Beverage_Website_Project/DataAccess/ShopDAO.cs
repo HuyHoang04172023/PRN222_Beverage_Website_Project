@@ -46,8 +46,6 @@ namespace PRN222_Beverage_Website_Project.DataAccess
             _context.SaveChanges();
         }
 
-
-
         public Shop? GetShopByUserID(int userId)
         {
             return _context.Shops
@@ -62,6 +60,41 @@ namespace PRN222_Beverage_Website_Project.DataAccess
                 .Where(s => s.ShopId == shopID)
                 .Include(s => s.StatusShop)
                 .FirstOrDefault();
+        }
+
+        public List<Shop>? GetShopsPending()
+        {
+            return _context.Shops
+                .Where(s => s.StatusShop.StatusShopName == "pending")
+                .ToList();
+        }
+
+        public void UpdateStatusShopByShopId(int shopID, int idStatusShop)
+        {
+            var shop = _context.Shops.FirstOrDefault(s => s.ShopId == shopID);
+            if (shop != null)
+            {
+                shop.StatusShopId = idStatusShop;
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Không tìm thấy cửa hàng.");
+            }
+        }
+
+        public void UpdateApprovedByOfShop(Shop updatedShop)
+        {
+            var existingShop = _context.Shops.Find(updatedShop.ShopId);
+
+            if (existingShop == null)
+            {
+                throw new Exception("Cửa hàng không tồn tại.");
+            }
+
+            existingShop.ApprovedBy = updatedShop.ApprovedBy;
+
+            _context.SaveChanges();
         }
     }
 }

@@ -1,0 +1,92 @@
+﻿@model List<PRN222_Beverage_Website_Project.Models.Shop>
+
+@{
+    ViewData["Title"] = "Danh sách cửa hàng";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+<h2>Danh sách cửa hàng</h2>
+
+<table class="table table-bordered text-center" id="shopTable">
+    <thead>
+        <tr>
+            <th style="width: 5%;">ID</th>
+            <th style="width: 15%;">Tên cửa hàng</th>
+            <th style="width: 20%;">Địa chỉ</th>
+            <th style="width: 15%;">Hình ảnh</th>
+            <th style="width: 30%;">Mô tả</th>
+            <th style="width: 10%;">Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="shopList">
+        @foreach (var shop in Model)
+        {
+            <tr id="shopRow_@shop.ShopId">
+                <td>@shop.ShopId</td>
+                <td>@shop.ShopName</td>
+                <td>@shop.ShopAddress</td>
+                <td>
+                    <img src="@shop.ShopImage" alt="Shop Image" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;" />
+                </td>
+                <td class="text-start">@shop.ShopDescription</td>
+                <td>
+                    <a href="javascript:void(0);" onclick="confirmUpdate(@shop.ShopId, 'reject')" class="btn btn-sm btn-warning">
+                        <i class="bi bi-x-circle"></i>
+                    </a>
+                    <a href="javascript:void(0);" onclick="confirmUpdate(@shop.ShopId, 'active')" class="btn btn-sm btn-success">
+                        <i class="bi bi-check-circle"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function confirmUpdate(shopId, status) {
+        Swal.fire({
+            title: 'Xác nhận cập nhật?',
+            text: status === 'active' ? "Bạn có chắc chắn muốn phê duyệt cửa hàng này?" : "Bạn có chắc chắn muốn từ chối cửa hàng này?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: status === 'active' ? '#28a745' : '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                updateShopStatus(shopId, status);
+            }
+        });
+    }
+
+    function updateShopStatus(shopId, status) {
+        fetch('@Url.Action("UpdateStatusShop", "Shop")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `shopId=${shopId}&statusShop=${status}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    title: "Thành công!",
+                    text: "Trạng thái cửa hàng đã được cập nhật.",
+                    icon: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                // Xóa shop khỏi danh sách
+                document.getElementById(`shopRow_${shopId}`).remove();
+            } else {
+                Swal.fire("Lỗi!", "Cập nhật thất bại, vui lòng thử lại.", "error");
+            }
+        })
+        .catch(error => Swal.fire("Lỗi!", "Có lỗi xảy ra, vui lòng thử lại.", "error"));
+    }
+</script>

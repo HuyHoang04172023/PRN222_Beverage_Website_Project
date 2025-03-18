@@ -32,5 +32,20 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             return _repository.GetShopByShopID(shopID);
         }
+
+        public List<Shop>? GetShopsPending()
+        {
+            return _repository.GetShopsPending();
+        }
+
+        public void UpdateStatusShopByShopId(int shopID, int idStatusShop)
+        {
+            _repository.UpdateStatusShopByShopId(shopID, idStatusShop);
+        }
+
+        public void UpdateApprovedByOfShop(Shop updatedShop)
+        {
+            _repository.UpdateApprovedByOfShop(updatedShop);
+        }
     }
 }

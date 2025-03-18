@@ -59,6 +59,7 @@ app.MapControllerRoute(name: "register", pattern: "register", defaults: new { co
 app.MapControllerRoute(name: "CreateShop", pattern: "shop/create", defaults: new { controller = "Shop", action = "Create" });
 app.MapControllerRoute(name: "UpdateShop", pattern: "shop/update/{shopId}", defaults: new { controller = "Shop", action = "Update" });
 app.MapControllerRoute(name: "DeleteShop", pattern: "shop/delete/{shopId}", defaults: new { controller = "Shop", action = "Delete" });
+app.MapControllerRoute(name: "ApproveShop", pattern: "shop/approve", defaults: new { controller = "Shop", action = "Approve" });
 
 
 app.Run();

@@ -11,12 +11,14 @@ namespace PRN222_Beverage_Website_Project.Controllers
     public class ShopController : Controller
     {
         private readonly ShopService _shopService;
+        private readonly UserService _userService;
         private readonly ConfigDataService _configDataService;
         private readonly IImageService _imageService;
 
         public ShopController(IImageService imageService)
         {
             _shopService = new ShopService();
+            _userService = new UserService();
             _configDataService = new ConfigDataService();
             _imageService = imageService;
         }
@@ -194,6 +196,35 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
             _shopService.DeleteShop(shopId);
             return Redirect("/user");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "manager")]
+        public IActionResult Approve(int shopId)
+        {
+            List<Shop> shops = _shopService.GetShopsPending();
+
+            return View(shops);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "manager")]
+        public IActionResult UpdateStatusShop(int shopId, string statusShop)
+        {
+            var userId = User.FindFirstValue("UserID");
+            int statusId = _configDataService.GetStatusShopIdByStatusShopName(statusShop) ?? 10;
+            _shopService.UpdateStatusShopByShopId(shopId, statusId);
+
+            Shop shop = _shopService.GetShopByShopID(shopId);
+            shop.ApprovedBy = int.Parse(userId);
+            _shopService.UpdateApprovedByOfShop(shop);
+
+            if(statusShop == "active" && shop != null)
+            {
+                int roleId = _configDataService.GetRoleIdByRoleName("sale") ?? 10;
+                _userService.UpdateRoleIdOfUser(shop.CreatedBy, roleId);
+            }
+            return Json(new { success = true });
         }
     }
 }

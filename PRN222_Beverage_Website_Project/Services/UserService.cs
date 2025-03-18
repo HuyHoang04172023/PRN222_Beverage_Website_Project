@@ -31,6 +31,9 @@ namespace PRN222_Beverage_Website_Project.Services
             _repository.AddUser(user);
         }
 
-        
+        public void UpdateRoleIdOfUser(int userId, int roleId)
+        {
+            _repository.UpdateRoleIdOfUser(userId, roleId);
+        }
     }
 }

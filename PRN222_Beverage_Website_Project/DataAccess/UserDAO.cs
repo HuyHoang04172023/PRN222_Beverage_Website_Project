@@ -30,5 +30,15 @@ namespace PRN222_Beverage_Website_Project.DataAccess
             _context.Users.Add(user);
             _context.SaveChanges();
         }
+        public void UpdateRoleIdOfUser(int userId, int roleId)
+        {
+            var existingUser = _context.Users.FirstOrDefault(u => u.UserId == userId);
+
+            if (existingUser != null)
+            {
+                existingUser.RoleId = roleId;
+                _context.SaveChanges();
+            }
+        }
     }
 }

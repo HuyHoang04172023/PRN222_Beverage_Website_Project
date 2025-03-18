@@ -31,6 +31,9 @@ namespace PRN222_Beverage_Website_Project.Repositories
             _dao.AddUser(user);
         }
 
-        
+        public void UpdateRoleIdOfUser(int userId, int roleId)
+        {
+            _dao.UpdateRoleIdOfUser(userId, roleId);
+        }
     }
 }
