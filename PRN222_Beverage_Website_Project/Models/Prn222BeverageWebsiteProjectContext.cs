@@ -43,17 +43,10 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-    //        => optionsBuilder.UseSqlServer("server=(local);database=PRN222_Beverage_Website_Project;uid=sa;pwd=123;Trusted_Connection=True;Encrypt=False");
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            var ConnectionString = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetConnectionString("DefaultConnection");
-            optionsBuilder.UseSqlServer(ConnectionString);
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("server=(local);database=PRN222_Beverage_Website_Project;uid=hoang;pwd=123;Trusted_Connection=True;Encrypt=False;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Like>(entity =>
@@ -157,25 +150,6 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
         {
             entity.Property(e => e.ProductSizeId).HasColumnName("ProductSizeID");
             entity.Property(e => e.ProductSizeName).HasMaxLength(50);
-
-            entity.HasMany(d => d.Products).WithMany(p => p.ProductSizes)
-                .UsingEntity<Dictionary<string, object>>(
-                    "ProductSizeProduct",
-                    r => r.HasOne<Product>().WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_ProductSizeProduct_Products"),
-                    l => l.HasOne<ProductSize>().WithMany()
-                        .HasForeignKey("ProductSizeId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_ProductSizeProduct_ProductSizes"),
-                    j =>
-                    {
-                        j.HasKey("ProductSizeId", "ProductId");
-                        j.ToTable("ProductSizeProduct");
-                        j.IndexerProperty<int>("ProductSizeId").HasColumnName("ProductSizeID");
-                        j.IndexerProperty<int>("ProductId").HasColumnName("ProductID");
-                    });
         });
 
         modelBuilder.Entity<ProductVariant>(entity =>
@@ -238,7 +212,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
             entity.Property(e => e.ShopAddress).HasMaxLength(50);
             entity.Property(e => e.ShopDescription).HasMaxLength(50);
             entity.Property(e => e.ShopImage)
-                .HasMaxLength(50)
+                .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.ShopName).HasMaxLength(50);
             entity.Property(e => e.StatusShopId).HasColumnName("StatusShopID");
@@ -249,12 +223,10 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ShopCreatedByNavigations)
                 .HasForeignKey(d => d.CreatedBy)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Shops_Users2");
 
             entity.HasOne(d => d.StatusShop).WithMany(p => p.Shops)
                 .HasForeignKey(d => d.StatusShopId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Shops_StatusShop");
         });
 

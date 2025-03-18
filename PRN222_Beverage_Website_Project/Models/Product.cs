@@ -36,6 +36,4 @@ public partial class Product
     public virtual Shop Shop { get; set; } = null!;
 
     public virtual StatusProduct StatusProduct { get; set; } = null!;
-
-    public virtual ICollection<ProductSize> ProductSizes { get; set; } = new List<ProductSize>();
 }

@@ -10,6 +10,4 @@ public partial class ProductSize
     public string? ProductSizeName { get; set; }
 
     public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
-
-    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }
