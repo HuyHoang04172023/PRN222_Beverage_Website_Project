@@ -1,0 +1,67 @@
+﻿@model List<PRN222_Beverage_Website_Project.Models.Product>
+
+@{
+    Layout = "~/Views/Shared/SaleLayout.cshtml";
+    ViewBag.Title = "Danh Sách Sản Phẩm";
+}
+
+<h2 class="text-center my-4">@ViewBag.Title</h2>
+
+<div class="text-center mb-4">
+    <a href="/product/create" class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i> Thêm Mới Sản Phẩm
+    </a>
+</div>
+
+<div class="container">
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <a href="/product/update/@product.ProductId" class="card-link">
+                    <div class="card shadow-sm position-relative">
+                        <!-- Hiển thị trạng thái -->
+                        <span class="status-label
+                        @(product.StatusProduct.StatusProductName.ToLower() == "pending" ? "bg-warning" :
+                          product.StatusProduct.StatusProductName.ToLower() == "active" ? "bg-success" : "bg-danger")">
+                            @product.StatusProduct.StatusProductName
+                        </span>
+
+                        <img src="@(string.IsNullOrEmpty(product.ProductImage) ? "/images/default.jpg" : product.ProductImage)"
+                             class="card-img-top" alt="@product.ProductName">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.ProductName</h5>
+                            <p class="card-text">
+                                @(product.ProductDescription.Length > 100 ? product.ProductDescription.Substring(0, 100) + "..." : product.ProductDescription)
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+<style>
+
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .card-link:hover .card {
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+        transition: 0.3s;
+    }
+
+    .status-label {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px 10px;
+        color: white;
+        font-size: 0.85rem;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+</style>

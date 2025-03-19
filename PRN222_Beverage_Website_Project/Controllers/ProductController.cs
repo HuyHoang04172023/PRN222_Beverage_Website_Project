@@ -14,12 +14,23 @@ namespace PRN222_Beverage_Website_Project.Controllers
         private readonly Prn222BeverageWebsiteProjectContext _context;
         private readonly IImageService _imageService;
         private readonly ConfigDataService _configDataService;
+        private readonly ProductService _productService;
+
 
         public ProductController(IImageService imageService)
         {
             _context = new Prn222BeverageWebsiteProjectContext();
             _imageService = imageService;
             _configDataService = new ConfigDataService();
+            _productService = new ProductService();
+        }
+
+        public IActionResult ProductOfShop()
+        {
+            Shop shop = HttpContext.Session.GetObjectFromSession<Shop>("shop");
+            List<Product> products = _productService.GetProductsByShopId(shop.ShopId);
+
+            return View(products);
         }
 
         [HttpGet]
@@ -124,7 +135,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
             _context.SaveChanges();
 
             TempData["SuccessMessage"] = "Thêm sản phẩm thành công!";
-            return RedirectToAction("Create");
+            return Redirect("/product/product-of-shop");
         }
     }
 }
