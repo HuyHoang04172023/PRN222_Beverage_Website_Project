@@ -5,6 +5,8 @@ namespace PRN222_Beverage_Website_Project.ModelViews
 {
     public class ProductViewModel
     {
+        public int ProductId { get; set; }
+
         [Required(ErrorMessage = "Tên sản phẩm không được để trống.")]
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Tên sản phẩm phải từ 3 đến 100 ký tự.")]
         public string ProductName { get; set; } = null!;

@@ -33,5 +33,10 @@ namespace PRN222_Beverage_Website_Project.DataAccess
                    .Select(r => r.StatusProductId)
                    .FirstOrDefault();
         }
+
+        public List<ProductSize> GetProductSizes()
+        {
+            return _context.ProductSizes.ToList();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using PRN222_Beverage_Website_Project.DataAccess;
+using PRN222_Beverage_Website_Project.Models;
 
 namespace PRN222_Beverage_Website_Project.Repositories
 {
@@ -10,6 +11,7 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             _dao = new ConfigDataDAO();
         }
+
         public int? GetRoleIdByRoleName(string roleName)
         {
             return _dao.GetRoleIdByRoleName(roleName);
@@ -19,9 +21,15 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             return _dao.GetStatusShopIdByStatusShopName(statusShopName);
         }
+
         public int? GetStatusProductIdByStatusProductName(string statusProductName)
         {
             return _dao.GetStatusProductIdByStatusProductName(statusProductName);
+        }
+
+        public List<ProductSize> GetProductSizes()
+        {
+            return _dao.GetProductSizes();
         }
     }
 }

@@ -137,5 +137,125 @@ namespace PRN222_Beverage_Website_Project.Controllers
             TempData["SuccessMessage"] = "Thêm sản phẩm thành công!";
             return Redirect("/product/product-of-shop");
         }
+
+        [HttpGet]
+        [Authorize(Roles = "sale")]
+        public IActionResult Update(int productId)
+        {
+            Product? product = _productService.GetProductByProductId(productId);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            ProductViewModel productView = new ProductViewModel
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                ProductDescription = product.ProductDescription,
+                ProductImage = product.ProductImage,
+                ProductVariants = product.ProductVariants.Select(v => new ProductVariantViewModel
+                {
+                    ProductVariantId = v.ProductVariantId,
+                    ProductVariantPrice = v.ProductVariantPrice,
+                    ProductSizeId = v.ProductSizeId
+                }).ToList()
+            };
+
+            productView.ProductSizes = _context.ProductSizes
+                .Select(s => new SelectListItem { Value = s.ProductSizeId.ToString(), Text = s.ProductSizeName })
+                .ToList();
+
+            return View(productView);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "sale")]
+        public async Task<IActionResult> UpdateAsync(ProductViewModel model, IFormFile productImageFile)
+        {
+            //Debug
+            Console.WriteLine($"productImageFile: {productImageFile}");
+            // In thông tin của model ra console
+            Console.WriteLine("Tên sản phẩm: " + model.ProductName);
+            Console.WriteLine("Mô tả sản phẩm: " + model.ProductDescription);
+            Console.WriteLine("Hình ảnh: " + model.ProductImage);
+
+            if (model.ProductVariants != null)
+            {
+                foreach (var variant in model.ProductVariants)
+                {
+                    Console.WriteLine($"Biến thể - Giá: {variant.ProductVariantPrice}, Kích thước ID: {variant.ProductSizeId}");
+                }
+            }
+            //End Debug
+
+            ModelState.Remove("ProductImage");
+            ModelState.Remove("productImageFile");
+
+            //Add ProductSizes to return view if error
+            model.ProductSizes = _context.ProductSizes
+                    .Select(s => new SelectListItem { Value = s.ProductSizeId.ToString(), Text = s.ProductSizeName })
+                    .ToList();
+            if (!ModelState.IsValid)
+            {
+                //Debug
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Lỗi tại {state.Key}: {error.ErrorMessage}");
+                    }
+                }
+                //End Debug
+
+                return View(model);
+            }
+
+
+            //VariantError
+            HashSet<int> sizeIds = new HashSet<int>();
+
+            foreach (var variant in model.ProductVariants)
+            {
+                if (!sizeIds.Add(variant.ProductSizeId)) // Nếu Add() trả về false => bị trùng
+                {
+                    TempData["VariantError"] = $"Lỗi: Kích thước bị trùng!";
+                    return View(model);
+                }
+            }
+
+            Product product = new Product();
+            product.ProductId = model.ProductId;
+            product.ProductName = model.ProductName;
+            product.ProductDescription = model.ProductDescription;
+
+            if (productImageFile != null && productImageFile.Length > 0)
+            {
+
+                product.ProductImage = await _imageService.SaveImageAsync(productImageFile, "products");
+            }
+            else
+            {
+                ViewData["ImageError"] = "Vui lòng tải lên một ảnh.";
+                return View(model);
+            }
+
+            _productService.UpdateProduct(product);
+
+            _productService.DeleteProductVariantByProductId(product.ProductId);
+            foreach (var variant in model.ProductVariants)
+            {
+                ProductVariant productVariant = new ProductVariant();
+                productVariant.ProductVariantPrice = variant.ProductVariantPrice;
+                productVariant.ProductSizeId = variant.ProductSizeId;
+                productVariant.ProductId = model.ProductId;
+
+                _productService.AddProductVarriant(productVariant);
+            }
+
+            TempData["SuccessMessage"] = "Thêm sản phẩm thành công!";
+            return Redirect("/product/product-of-shop");
+        }
     }
 }

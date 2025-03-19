@@ -1,4 +1,5 @@
-﻿using PRN222_Beverage_Website_Project.Repositories;
+﻿using PRN222_Beverage_Website_Project.Models;
+using PRN222_Beverage_Website_Project.Repositories;
 
 namespace PRN222_Beverage_Website_Project.Services
 {
@@ -21,6 +22,11 @@ namespace PRN222_Beverage_Website_Project.Services
         public int? GetStatusProductIdByStatusProductName(string statusProductName)
         {
             return _repository.GetStatusProductIdByStatusProductName(statusProductName);
+        }
+
+        public List<ProductSize> GetProductSizes()
+        {
+            return _repository.GetProductSizes();
         }
     }
 }
