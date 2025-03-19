@@ -4,5 +4,6 @@
     {
         public int? GetRoleIdByRoleName(string roleName);
         public int? GetStatusShopIdByStatusShopName(string statusShopName);
+        public int? GetStatusProductIdByStatusProductName(string statusProductName);
     }
 }

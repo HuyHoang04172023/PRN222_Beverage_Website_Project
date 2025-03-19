@@ -124,9 +124,11 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
                 .HasColumnName("created_at");
             entity.Property(e => e.ProductDescription).HasMaxLength(50);
             entity.Property(e => e.ProductImage)
-                .HasMaxLength(50)
+                .HasMaxLength(255)
                 .IsUnicode(false);
+            entity.Property(e => e.ProductLike).HasDefaultValue(0);
             entity.Property(e => e.ProductName).HasMaxLength(50);
+            entity.Property(e => e.ProductSoldCount).HasDefaultValue(0);
             entity.Property(e => e.ShopId).HasColumnName("ShopID");
             entity.Property(e => e.StatusProductId).HasColumnName("StatusProductID");
 

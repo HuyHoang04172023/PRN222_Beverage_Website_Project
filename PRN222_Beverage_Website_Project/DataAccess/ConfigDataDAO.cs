@@ -25,5 +25,13 @@ namespace PRN222_Beverage_Website_Project.DataAccess
                    .Select(r => r.StatusShopId)
                    .FirstOrDefault();
         }
+
+        public int? GetStatusProductIdByStatusProductName(string statusProductName)
+        {
+            return _context.StatusProducts
+                   .Where(r => r.StatusProductName == statusProductName)
+                   .Select(r => r.StatusProductId)
+                   .FirstOrDefault();
+        }
     }
 }

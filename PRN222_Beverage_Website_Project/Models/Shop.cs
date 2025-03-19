@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace PRN222_Beverage_Website_Project.Models;
 
@@ -33,5 +34,6 @@ public partial class Shop
 
     public virtual ICollection<ShopReview> ShopReviews { get; set; } = new List<ShopReview>();
 
+    [JsonIgnore]
     public virtual StatusShop StatusShop { get; set; } = null!;
 }

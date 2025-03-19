@@ -6,6 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Thời gian session hết hạn
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 // Thêm dịch vụ Authentication với Cookie
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -46,7 +53,7 @@ app.MapControllers();  // Mapping các controllers
 
 // Các route định nghĩa cho các controller và action
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/");
-app.MapControllerRoute(name: "user", pattern: "user", defaults: new { controller = "Home", action = "User" });
+app.MapControllerRoute(name: "user", pattern: "user", defaults: new { controller = "Home", action = "HomeUser" });
 app.MapControllerRoute(name: "sale", pattern: "sale", defaults: new { controller = "Home", action = "Sale" });
 app.MapControllerRoute(name: "manager", pattern: "manager", defaults: new { controller = "Home", action = "Manager" });
 app.MapControllerRoute(name: "admin", pattern: "admin", defaults: new { controller = "Home", action = "Admin" });
@@ -60,6 +67,9 @@ app.MapControllerRoute(name: "CreateShop", pattern: "shop/create", defaults: new
 app.MapControllerRoute(name: "UpdateShop", pattern: "shop/update/{shopId}", defaults: new { controller = "Shop", action = "Update" });
 app.MapControllerRoute(name: "DeleteShop", pattern: "shop/delete/{shopId}", defaults: new { controller = "Shop", action = "Delete" });
 app.MapControllerRoute(name: "ApproveShop", pattern: "shop/approve", defaults: new { controller = "Shop", action = "Approve" });
+
+//Route for Product
+app.MapControllerRoute(name: "CreateProduct", pattern: "product/create", defaults: new { controller = "Product", action = "Create" });
 
 
 app.Run();

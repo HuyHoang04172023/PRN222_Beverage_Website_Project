@@ -15,9 +15,9 @@ public partial class Product
 
     public int StatusProductId { get; set; }
 
-    public int ProductSoldCount { get; set; }
+    public int? ProductSoldCount { get; set; }
 
-    public int ProductLike { get; set; }
+    public int? ProductLike { get; set; }
 
     public int ShopId { get; set; }
 

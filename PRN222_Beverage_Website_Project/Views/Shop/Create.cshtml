@@ -23,7 +23,8 @@
 
     <div class="form-group">
         <label asp-for="ShopImage" class="control-label">Shop Image</label>
-        <input type="file" name="shopImageFile" class="form-control" />
+        <img id="previewImage" src="" style="max-width: 100px; margin-top: 10px; display: block;">
+        <input type="file" id="shopImageFile" name="shopImageFile" class="form-control" />
         <span class="text-danger">@ViewData["ImageError"]</span>
         <span asp-validation-for="ShopImage" class="text-danger"></span>
     </div>
@@ -40,6 +41,21 @@
     </div>
 </form>
 
+<script>
+    document.getElementById("shopImageFile").addEventListener("change", function(event) {
+        const file = event.target.files[0]; // Lấy file đầu tiên trong input
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById("previewImage");
+                img.src = e.target.result; // Gán URL của ảnh vào src
+                img.style.display = "block"; // Hiển thị ảnh
+            };
+            reader.readAsDataURL(file); // Đọc file dưới dạng URL
+        }
+    });
+
+</script>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

@@ -1,4 +1,5 @@
-﻿using PRN222_Beverage_Website_Project.DataAccess;
+﻿using System.Reflection.Metadata.Ecma335;
+using PRN222_Beverage_Website_Project.DataAccess;
 
 namespace PRN222_Beverage_Website_Project.Repositories
 {
@@ -17,6 +18,10 @@ namespace PRN222_Beverage_Website_Project.Repositories
         public int? GetStatusShopIdByStatusShopName(string statusShopName)
         {
             return _dao.GetStatusShopIdByStatusShopName(statusShopName);
+        }
+        public int? GetStatusProductIdByStatusProductName(string statusProductName)
+        {
+            return _dao.GetStatusProductIdByStatusProductName(statusProductName);
         }
     }
 }
