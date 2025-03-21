@@ -42,7 +42,12 @@ namespace PRN222_Beverage_Website_Project.Services
 
         public void DeleteProductVariantByProductId(int productId)
         {
-            _repository.DeleteProductVariantByProductId(productId) ;
+            _repository.DeleteProductVariantByProductId(productId);
+        }
+
+        public void DeleteProductByProductId(int productId)
+        {
+            _repository.DeleteProductByProductId(productId);
         }
     }
 }

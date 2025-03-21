@@ -12,5 +12,6 @@ namespace PRN222_Beverage_Website_Project.Repositories
         public void UpdateProduct(Product updatedProduct);
         public bool UpdateProductVariant(ProductVariant updatedProductVariant);
         public void DeleteProductVariantByProductId(int productId);
+        public void DeleteProductByProductId(int productId);
     }
 }

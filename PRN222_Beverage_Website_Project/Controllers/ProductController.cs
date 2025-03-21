@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PRN222_Beverage_Website_Project.Extensions;
@@ -255,6 +256,27 @@ namespace PRN222_Beverage_Website_Project.Controllers
             }
 
             TempData["SuccessMessage"] = "Thêm sản phẩm thành công!";
+            return Redirect("/product/product-of-shop");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "sale")]
+        public IActionResult Delete(int productId)
+        {
+            var userId = User.FindFirstValue("UserID");
+            Product product = _productService.GetProductByProductId(productId);
+
+            if (product == null)
+            {
+                return NotFound("Sản phẩm không tồn tại.");
+            }
+
+            //if (product.CreatedBy != int.Parse(userId))
+            //{
+            //    return View("~/Views/User/AccessDenied.cshtml");
+            //}
+
+            _productService.DeleteProductByProductId(productId);
             return Redirect("/product/product-of-shop");
         }
     }

@@ -44,5 +44,10 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             _dao.DeleteProductVariantByProductId(productId);
         }
+
+        public void DeleteProductByProductId(int productId)
+        {
+            _dao.DeleteProductByProductId(productId);
+        }
     }
 }

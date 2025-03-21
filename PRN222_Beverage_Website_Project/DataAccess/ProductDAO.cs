@@ -86,6 +86,21 @@ namespace PRN222_Beverage_Website_Project.DataAccess
             _context.SaveChanges();
         }
 
+        public void DeleteProductByProductId(int productId)
+        {
+            var product = _context.Products
+                        .Include(p => p.ProductVariants)
+                        .FirstOrDefault(p =>  p.ProductId == productId);
+            if (product != null)
+            {
+                if (product.ProductVariants != null && product.ProductVariants.Any())
+                {
+                    _context.ProductVariants.RemoveRange(product.ProductVariants);
+                }
 
+                _context.Products.Remove(product);
+                _context.SaveChanges();
+            }
+        }
     }
 }
