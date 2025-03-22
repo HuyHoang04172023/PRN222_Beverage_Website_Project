@@ -26,7 +26,7 @@ public partial class Shop
 
     public virtual User? ApprovedByNavigation { get; set; }
 
-    public virtual User CreatedByNavigation { get; set; } = null!;
+    public virtual User? CreatedByNavigation { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 

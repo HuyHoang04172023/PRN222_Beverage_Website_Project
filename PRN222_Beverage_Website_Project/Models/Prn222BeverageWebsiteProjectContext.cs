@@ -122,6 +122,7 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.ProductDescription).HasMaxLength(50);
             entity.Property(e => e.ProductImage)
                 .HasMaxLength(255)
@@ -132,10 +133,14 @@ public partial class Prn222BeverageWebsiteProjectContext : DbContext
             entity.Property(e => e.ShopId).HasColumnName("ShopID");
             entity.Property(e => e.StatusProductId).HasColumnName("StatusProductID");
 
-            entity.HasOne(d => d.ApprovedByNavigation).WithMany(p => p.Products)
+            entity.HasOne(d => d.ApprovedByNavigation).WithMany(p => p.ProductApprovedByNavigations)
                 .HasForeignKey(d => d.ApprovedBy)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Products_Users");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProductCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_Products_Users1");
 
             entity.HasOne(d => d.Shop).WithMany(p => p.Products)
                 .HasForeignKey(d => d.ShopId)

@@ -28,7 +28,9 @@ public partial class User
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    public virtual ICollection<Product> ProductApprovedByNavigations { get; set; } = new List<Product>();
+
+    public virtual ICollection<Product> ProductCreatedByNavigations { get; set; } = new List<Product>();
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 

@@ -25,7 +25,11 @@ public partial class Product
 
     public DateTime CreatedAt { get; set; }
 
+    public int? CreatedBy { get; set; }
+
     public virtual User ApprovedByNavigation { get; set; } = null!;
+
+    public virtual User? CreatedByNavigation { get; set; }
 
     public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
 

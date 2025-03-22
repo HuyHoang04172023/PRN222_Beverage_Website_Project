@@ -103,6 +103,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
             }
 
             Shop shop = HttpContext.Session.GetObjectFromSession<Shop>("shop");
+            var userId = User.FindFirstValue("UserID");
 
             Product product = new Product();
             product.ProductName = model.ProductName;
@@ -110,6 +111,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
             product.StatusProductId = _configDataService.GetStatusProductIdByStatusProductName("pending") ?? 10;
             product.ShopId = shop.ShopId;
             product.CreatedAt = DateTime.Now;
+            product.CreatedBy = int.Parse(userId);
 
             if (productImageFile != null && productImageFile.Length > 0)
             {
@@ -148,6 +150,12 @@ namespace PRN222_Beverage_Website_Project.Controllers
             if (product == null)
             {
                 return NotFound();
+            }
+            var userId = User.FindFirstValue("UserID");
+
+            if (product.CreatedBy != int.Parse(userId))
+            {
+                return View("~/Views/User/AccessDenied.cshtml");
             }
 
             ProductViewModel productView = new ProductViewModel
@@ -271,10 +279,10 @@ namespace PRN222_Beverage_Website_Project.Controllers
                 return NotFound("Sản phẩm không tồn tại.");
             }
 
-            //if (product.CreatedBy != int.Parse(userId))
-            //{
-            //    return View("~/Views/User/AccessDenied.cshtml");
-            //}
+            if (product.CreatedBy != int.Parse(userId))
+            {
+                return View("~/Views/User/AccessDenied.cshtml");
+            }
 
             _productService.DeleteProductByProductId(productId);
             return Redirect("/product/product-of-shop");
