@@ -200,7 +200,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
         [HttpGet]
         [Authorize(Roles = "manager")]
-        public IActionResult Approve(int shopId)
+        public IActionResult Approve()
         {
             List<Shop> shops = _shopService.GetShopsPending();
 

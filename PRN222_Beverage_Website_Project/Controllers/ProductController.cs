@@ -287,5 +287,32 @@ namespace PRN222_Beverage_Website_Project.Controllers
             _productService.DeleteProductByProductId(productId);
             return Redirect("/product/product-of-shop");
         }
+
+        [HttpGet]
+        [Authorize(Roles = "manager")]
+        public IActionResult Approve()
+        {
+            List<Product>? products = _productService.GetProductsPending();
+
+            return View(products);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "manager")]
+        public IActionResult UpdateStatusProduct(int productId, string statusProduct)
+        {
+            var userId = User.FindFirstValue("UserID");
+            int statusId = _configDataService.GetStatusProductIdByStatusProductName(statusProduct) ?? 10;
+            _productService.UpdateStatusProductByProductId(productId, statusId);
+
+            Product? product = _productService.GetProductByProductId(productId);
+            if(product != null)
+            {
+                product.ApprovedBy = int.Parse(userId);
+                _productService.UpdateApprovedByOfProduct(product);
+            }
+
+            return Json(new { success = true });
+        }
     }
 }

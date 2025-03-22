@@ -49,5 +49,20 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             _repository.DeleteProductByProductId(productId);
         }
+
+        public List<Product>? GetProductsPending()
+        {
+            return _repository.GetProductsPending();
+        }
+
+        public void UpdateStatusProductByProductId(int productId, int idStatusProduct)
+        {
+            _repository.UpdateStatusProductByProductId(productId, idStatusProduct);
+        }
+
+        public void UpdateApprovedByOfProduct(Product updatedProduct)
+        {
+            _repository.UpdateApprovedByOfProduct(updatedProduct);
+        }
     }
 }

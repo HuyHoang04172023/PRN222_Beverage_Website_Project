@@ -49,5 +49,20 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             _dao.DeleteProductByProductId(productId);
         }
+
+        public List<Product>? GetProductsPending()
+        {
+            return _dao.GetProductsPending();
+        }
+
+        public void UpdateStatusProductByProductId(int productId, int idStatusProduct)
+        {
+            _dao.UpdateStatusProductByProductId(productId, idStatusProduct);
+        }
+
+        public void UpdateApprovedByOfProduct(Product updatedProduct)
+        {
+            _dao.UpdateApprovedByOfProduct(updatedProduct);
+        }
     }
 }

@@ -1,0 +1,93 @@
+﻿@model List<PRN222_Beverage_Website_Project.Models.Product>
+
+@{
+    ViewData["Title"] = "Phế Duyệt Sản Phẩm";
+}
+
+<!-- Import SweetAlert2 và Bootstrap Icons -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+<h2>Danh sách sản phẩm</h2>
+
+<table class="table table-bordered text-center" id="productTable">
+    <thead>
+        <tr>
+            <th style="width: 5%;">ID</th>
+            <th style="width: 15%;">Tên Sản Phẩm</th>
+            <th style="width: 20%;">Mô Tả</th>
+            <th style="width: 15%;">Hình ảnh</th>
+            <th style="width: 10%;">Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="productList">
+        @foreach (var product in Model)
+        {
+            <tr id="productRow_@product.ProductId">
+                <td>@product.ProductId</td>
+                <td>@product.ProductName</td>
+                <td>@product.ProductDescription</td>
+                <td>
+                    <img src="@product.ProductImage" alt="Product Image" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;" />
+                </td>
+                <td>
+                    <!-- Nút Phế Duyệt -->
+                    <a href="javascript:void(0);" onclick="confirmUpdate(@product.ProductId, 'reject')" class="btn btn-sm btn-warning">
+                        <i class="bi bi-x-circle"></i>
+                    </a>
+                    <!-- Nút Duyệt -->
+                    <a href="javascript:void(0);" onclick="confirmUpdate(@product.ProductId, 'active')" class="btn btn-sm btn-success">
+                        <i class="bi bi-check-circle"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function confirmUpdate(productId, status) {
+        Swal.fire({
+            title: 'Xác nhận cập nhật?',
+            text: status === 'active' ? "Bạn có chắc chắn muốn phê duyệt sản phẩm này?" : "Bạn có chắc chắn muốn từ chối sản phẩm này?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: status === 'active' ? '#28a745' : '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                updateProductStatus(productId, status);
+            }
+        });
+    }
+
+    function updateProductStatus(productId, status) {
+        fetch('@Url.Action("UpdateStatusProduct", "Product")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `productId=${productId}&statusProduct=${status}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    title: "Thành công!",
+                    text: "Trạng thái sản phẩm đã được cập nhật.",
+                    icon: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                // Xóa sản phẩm khỏi danh sách
+                document.getElementById(`productRow_${productId}`).remove();
+            } else {
+                Swal.fire("Lỗi!", "Cập nhật thất bại, vui lòng thử lại.", "error");
+            }
+        })
+        .catch(error => Swal.fire("Lỗi!", "Có lỗi xảy ra, vui lòng thử lại.", "error"));
+    }
+</script>

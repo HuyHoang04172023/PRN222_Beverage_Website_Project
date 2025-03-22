@@ -102,5 +102,40 @@ namespace PRN222_Beverage_Website_Project.DataAccess
                 _context.SaveChanges();
             }
         }
+
+        public List<Product>? GetProductsPending()
+        {
+            return _context.Products
+                .Where(p => p.StatusProduct.StatusProductName == "pending")
+                .ToList();
+        }
+
+        public void UpdateStatusProductByProductId(int productId, int idStatusProduct)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+            if (product != null)
+            {
+                product.StatusProductId = idStatusProduct;
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Không tìm thấy sản phẩm.");
+            }
+        }
+
+        public void UpdateApprovedByOfProduct(Product updatedProduct)
+        {
+            var existingProduct = _context.Products.Find(updatedProduct.ProductId);
+
+            if (existingProduct == null)
+            {
+                throw new Exception("Sản phẩm không tồn tại.");
+            }
+
+            existingProduct.ApprovedBy = updatedProduct.ApprovedBy;
+
+            _context.SaveChanges();
+        }
     }
 }

@@ -73,6 +73,7 @@ app.MapControllerRoute(name: "GetProductOfShop", pattern: "product/product-of-sh
 app.MapControllerRoute(name: "CreateProduct", pattern: "product/create", defaults: new { controller = "Product", action = "Create" });
 app.MapControllerRoute(name: "UpdateProduct", pattern: "product/update/{productId}", defaults: new { controller = "Product", action = "Update" });
 app.MapControllerRoute(name: "DeleteProduct", pattern: "product/delete/{productId}", defaults: new { controller = "Product", action = "Delete" });
+app.MapControllerRoute(name: "ApproveProduct", pattern: "product/approve", defaults: new { controller = "Product", action = "Approve" });
 
 
 app.Run();
