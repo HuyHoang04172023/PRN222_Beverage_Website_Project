@@ -1,0 +1,64 @@
+﻿@model List<PRN222_Beverage_Website_Project.ModelViews.ItemCart>
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Giỏ hàng</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Kích thước</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><img src="@item.ProductImage" alt="@item.ProductName" style="width: 80px; height: 80px; object-fit: cover;"></td>
+                    <td>@item.ProductName</td>
+                    <td>@item.ProductSizeName</td>
+                    <td>@item.ProductVariantPrice.ToString("N0") VNĐ</td>
+                    <td>
+                        <div class="input-group">
+                            <button class="btn btn-outline-secondary" onclick="updateQuantity(@item.ProductVariantId, -1)">-</button>
+                            <input type="text" class="form-control text-center" id="quantity-@item.ProductVariantId" value="@item.Quantity" readonly>
+                            <button class="btn btn-outline-secondary" onclick="updateQuantity(@item.ProductVariantId, 1)">+</button>
+                        </div>
+                    </td>
+                    <td>
+                        <form asp-action="RemoveProductVariantInCart" asp-controller="Cart" method="post">
+                            <input type="hidden" name="productVariantId" value="@item.ProductVariantId" />
+                            <button type="submit" class="btn btn-danger">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function updateQuantity(productVariantId, change) {
+        let inputField = document.getElementById(`quantity-${productVariantId}`);
+        let newQuantity = parseInt(inputField.value) + change;
+
+        if (newQuantity < 1) {
+            return; // Không cho phép số lượng nhỏ hơn 1
+        }
+
+        fetch(`/Cart/UpdateQuantity?productVariantId=${productVariantId}&quantity=${newQuantity}`, {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                inputField.value = newQuantity; // Cập nhật số lượng hiển thị
+            }
+        });
+    }
+</script>
