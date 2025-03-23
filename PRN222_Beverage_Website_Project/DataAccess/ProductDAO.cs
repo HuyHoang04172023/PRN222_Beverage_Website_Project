@@ -37,6 +37,7 @@ namespace PRN222_Beverage_Website_Project.DataAccess
             return _context.Products
                 .Include(p => p.StatusProduct)
                 .Include(p => p.ProductVariants)
+                    .ThenInclude(pv => pv.ProductSize)
                 .FirstOrDefault(p => p.ProductId == productId);
         }
 

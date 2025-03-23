@@ -314,5 +314,11 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
             return Json(new { success = true });
         }
+        public IActionResult Detail(int productId)
+        {
+            Product? product = _productService.GetProductByProductId(productId);
+
+            return View(product);
+        }
     }
 }

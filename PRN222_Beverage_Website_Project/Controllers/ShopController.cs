@@ -229,7 +229,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
         public IActionResult Detail(int shopId)
         {
-            var shop = _shopService.GetShopByShopID(shopId);
+            Shop? shop = _shopService.GetShopByShopID(shopId);
 
             return View(shop);
         }
