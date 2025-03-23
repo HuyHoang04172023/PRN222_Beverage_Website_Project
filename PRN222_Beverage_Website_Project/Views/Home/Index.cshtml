@@ -1,8 +1,27 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<Shop>
+ 
+@{
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+    ViewBag.Title = "Trang chủ";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var shop in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <a href="/Shop/Detail/@shop.ShopId" class="text-decoration-none text-dark">
+                    <div class="card">
+                        <img src="@shop.ShopImage" class="card-img-top" alt="@shop.ShopName">
+                        <div class="card-body">
+                            <h5 class="card-title">@shop.ShopName</h5>
+                            <p class="card-text"><strong>Địa chỉ:</strong> @shop.ShopAddress</p>
+                            <p class="card-text">@shop.ShopDescription.Substring(0, Math.Min(shop.ShopDescription.Length, 100))...</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
 </div>
+

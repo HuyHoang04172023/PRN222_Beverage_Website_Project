@@ -21,7 +21,8 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            List<Shop>? shops = _shopService.GetShopsByStatusShopName("active");
+            return View(shops);
         }
 
         [Authorize(Roles = "user")]

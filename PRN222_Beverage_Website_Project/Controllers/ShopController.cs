@@ -226,5 +226,12 @@ namespace PRN222_Beverage_Website_Project.Controllers
             }
             return Json(new { success = true });
         }
+
+        public IActionResult Detail(int shopId)
+        {
+            var shop = _shopService.GetShopByShopID(shopId);
+
+            return View(shop);
+        }
     }
 }

@@ -58,6 +58,7 @@ namespace PRN222_Beverage_Website_Project.DataAccess
         {
             return _context.Shops
                 .Where(s => s.ShopId == shopID)
+                .Include(s => s.Products)
                 .Include(s => s.StatusShop)
                 .FirstOrDefault();
         }
@@ -95,6 +96,13 @@ namespace PRN222_Beverage_Website_Project.DataAccess
             existingShop.ApprovedBy = updatedShop.ApprovedBy;
 
             _context.SaveChanges();
+        }
+
+        public List<Shop>? GetShopsByStatusShopName(string statusShopName)
+        {
+            return _context.Shops
+                .Where(s => s.StatusShop.StatusShopName == statusShopName)
+                .ToList();
         }
     }
 }

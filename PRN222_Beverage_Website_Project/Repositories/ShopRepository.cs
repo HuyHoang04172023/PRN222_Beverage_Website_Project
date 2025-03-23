@@ -45,5 +45,10 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             _dao.UpdateApprovedByOfShop(updatedShop);
         }
+
+        public List<Shop>? GetShopsByStatusShopName(string statusShopName)
+        {
+            return _dao.GetShopsByStatusShopName(statusShopName);
+        }
     }
 }
