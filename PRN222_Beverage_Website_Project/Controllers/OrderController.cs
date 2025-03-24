@@ -39,6 +39,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
             if (order == null) return NotFound();
 
+            ViewBag.StatusOrders = _configDataService.GetStatusOrders();
             return View(order);
         }
 
@@ -72,6 +73,14 @@ namespace PRN222_Beverage_Website_Project.Controllers
             _orderService.UpdateStatusOrderByOrderId(orderId, statusId);
 
             return Redirect("/user/order");
+        }
+
+        public IActionResult UpdateStatusOrderByShop(int orderId, string statusName)
+        {
+            var statusId = _configDataService.GetStatusOrderIdByStatusOrderName(statusName) ?? 10;
+            _orderService.UpdateStatusOrderByOrderId(orderId, statusId);
+
+            return Redirect("/shop/order");
         }
     }
 }

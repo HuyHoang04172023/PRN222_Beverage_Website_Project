@@ -9,5 +9,6 @@ namespace PRN222_Beverage_Website_Project.Services
         public int? GetStatusProductIdByStatusProductName(string statusProductName);
         public int? GetStatusOrderIdByStatusOrderName(string statusOrderName);
         public List<ProductSize> GetProductSizes();
+        public List<StatusOrder> GetStatusOrders();
     }
 }

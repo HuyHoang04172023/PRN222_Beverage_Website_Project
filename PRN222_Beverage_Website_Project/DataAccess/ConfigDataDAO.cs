@@ -46,5 +46,9 @@ namespace PRN222_Beverage_Website_Project.DataAccess
         {
             return _context.ProductSizes.ToList();
         }
+        public List<StatusOrder> GetStatusOrders()
+        {
+            return _context.StatusOrders.ToList();
+        }
     }
 }
