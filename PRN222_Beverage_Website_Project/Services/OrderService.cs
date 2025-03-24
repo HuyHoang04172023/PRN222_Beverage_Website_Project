@@ -28,5 +28,10 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             return _repository.GetOrderByOrderId(orderId);
         }
+
+        public List<Order> GetOrdersByUserId(int userId)
+        {
+            return _repository.GetOrdersByUserId(userId);
+        }
     }
 }

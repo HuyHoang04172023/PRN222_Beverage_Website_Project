@@ -8,5 +8,6 @@ namespace PRN222_Beverage_Website_Project.Services
         public void AddOrderItem(OrderItem orderItem);
         public List<Order> GetOrdersByShopId(int shopId);
         public Order? GetOrderByOrderId(int orderId);
+        public List<Order> GetOrdersByUserId(int userId);
     }
 }

@@ -1,0 +1,41 @@
+﻿@model Order
+@{
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+    ViewBag.Title = "Chi tiết đơn hàng";
+}
+<h2>Chi tiết đơn hàng #@Model.OrderId</h2>
+<p><strong>Ngày tạo:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+<p><strong>Trạng thái:</strong> @Model.StatusOrder.StatusOrderName</p>
+<p><strong>Ghi chú:</strong> @Model.OrderNote</p>
+<p><strong>Số điện thoại:</strong> @Model.PhoneNumber</p>
+<p><strong>Địa chỉ giao hàng:</strong> @Model.ShippingAddress</p>
+
+<h3>Sản phẩm trong đơn hàng:</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Hình ảnh</th>
+            <th>Kích thước</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Thành tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            var totalItemPrice = item.OrderItemQuantity * item.OrderItemPrice;
+            <tr>
+                <td>@item.ProductVariant.Product.ProductName</td>
+                <td><img src="@item.ProductVariant.Product.ProductImage" width="50"></td>
+                <td>@item.ProductVariant.ProductSizeId</td>
+                <td>@item.OrderItemQuantity</td>
+                <td>@item.OrderItemPrice.ToString("N0") VNĐ</td>
+                <td>@totalItemPrice.ToString("N0") VNĐ</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Tổng tiền:</strong> @Model.OrderItems.Sum(oi => oi.OrderItemQuantity * oi.OrderItemPrice).ToString("N0") VNĐ</p>

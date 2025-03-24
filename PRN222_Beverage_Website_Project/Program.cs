@@ -71,6 +71,8 @@ app.MapControllerRoute(name: "ShopDetail", pattern: "shop/detail/{shopId}", defa
 
 //Route for Order
 app.MapControllerRoute(name: "ShopOrder", pattern: "shop/order", defaults: new { controller = "Order", action = "OrdersOfShop" });
+app.MapControllerRoute(name: "UserOrder", pattern: "user/order", defaults: new { controller = "Order", action = "OrdersOfUser" });
+
 
 //Route for Product
 app.MapControllerRoute(name: "GetProductOfShop", pattern: "product/product-of-shop", defaults: new { controller = "Product", action = "ProductOfShop" });

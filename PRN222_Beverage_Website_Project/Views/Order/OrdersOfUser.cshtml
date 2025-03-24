@@ -1,0 +1,38 @@
+﻿@model List<Order>
+@{
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+    ViewBag.Title = "Danh sách đơn hàng";
+}
+<h2>Danh sách đơn hàng</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã đơn hàng</th>
+            <th>Ngày tạo</th>
+            <th>Trạng thái</th>
+            <th>Số sản phẩm</th>
+            <th>Tổng tiền</th>
+            <th>Chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            var totalAmount = order.OrderItems.Sum(oi => oi.OrderItemQuantity * oi.OrderItemPrice);
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@order.StatusOrder.StatusOrderName</td>
+                <td>@order.OrderItems.Sum(oi => oi.OrderItemQuantity)</td>
+                <td>@totalAmount.ToString("N0") VNĐ</td>
+                <td>
+                    <form action="@Url.Action("OrderDetailOfUser", "Order")" method="post">
+                        <input type="hidden" name="orderId" value="@order.OrderId" />
+                        <button type="submit" class="btn btn-primary">Chi tiết</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

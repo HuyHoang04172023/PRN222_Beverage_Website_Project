@@ -45,5 +45,17 @@ namespace PRN222_Beverage_Website_Project.DataAccess
                             .ThenInclude(pv => pv.Product)
                     .FirstOrDefault();
         }
+
+        public List<Order> GetOrdersByUserId(int userId)
+        {
+            return _context.Orders
+                .Where(o => o.UserId == userId)
+                .Include(o => o.StatusOrder)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.ProductVariant)
+                        .ThenInclude(pv => pv.Product)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToList();
+        }
     }
 }
