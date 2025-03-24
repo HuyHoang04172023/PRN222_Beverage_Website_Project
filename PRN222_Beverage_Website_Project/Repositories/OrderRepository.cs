@@ -35,5 +35,10 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             return _dao.GetOrdersByUserId(userId);
         }
+
+        public void UpdateStatusOrderByOrderId(int orderId, int idStatusOrder)
+        {
+            _dao.UpdateStatusOrderByOrderId(orderId, idStatusOrder);
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace PRN222_Beverage_Website_Project.Repositories
         public List<Order> GetOrdersByShopId(int shopId);
         public Order? GetOrderByOrderId(int orderId);
         public List<Order> GetOrdersByUserId(int userId);
+        public void UpdateStatusOrderByOrderId(int orderId, int idStatusOrder);
     }
 }

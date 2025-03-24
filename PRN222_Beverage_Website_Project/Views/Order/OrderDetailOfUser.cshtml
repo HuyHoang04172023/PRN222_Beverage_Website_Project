@@ -4,6 +4,27 @@
     ViewBag.Title = "Chi tiết đơn hàng";
 }
 <h2>Chi tiết đơn hàng #@Model.OrderId</h2>
+
+@if (Model.StatusOrder.StatusOrderName.ToLower() == "cancel")
+{
+    <div class="alert alert-danger text-center">
+        <strong>Đơn hàng này đã bị hủy!</strong>
+    </div>
+}
+
+@if (Model.StatusOrder.StatusOrderName.ToLower() == "pending")
+{
+    <form action="@Url.Action("UpdateStatusOrder", "Order")" method="post">
+        <input type="hidden" name="orderId" value="@Model.OrderId" />
+        <input type="hidden" name="statusName" value="cancel" />
+        <button type="submit" class="btn btn-danger">Hủy đơn hàng</button>
+    </form>
+}
+else
+{
+    <button class="btn btn-secondary" disabled>Hủy đơn hàng</button>
+}
+
 <p><strong>Ngày tạo:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
 <p><strong>Trạng thái:</strong> @Model.StatusOrder.StatusOrderName</p>
 <p><strong>Ghi chú:</strong> @Model.OrderNote</p>
@@ -39,3 +60,45 @@
 </table>
 
 <p><strong>Tổng tiền:</strong> @Model.OrderItems.Sum(oi => oi.OrderItemQuantity * oi.OrderItemPrice).ToString("N0") VNĐ</p>
+
+<div class="order-status">
+    <div class="progress">
+        <div class="progress-bar @(Model.StatusOrder.StatusOrderName == "pending" ? "active" : "")">Pending</div>
+        <div class="progress-bar @(Model.StatusOrder.StatusOrderName == "doing" ? "active" : "")">Doing</div>
+        <div class="progress-bar @(Model.StatusOrder.StatusOrderName == "shipping" ? "active" : "")">Shipping</div>
+        <div class="progress-bar @(Model.StatusOrder.StatusOrderName == "success" ? "active" : "")">Success</div>
+    </div>
+</div>
+
+<style>
+    .order-status {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .progress {
+        display: flex;
+        width: 80%;
+        position: relative;
+    }
+
+    .progress-bar {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        background-color: #ddd;
+        border-right: 2px solid white;
+        transition: background-color 0.3s;
+    }
+
+        .progress-bar:last-child {
+            border-right: none;
+        }
+
+        .progress-bar.active {
+            background-color: #28a745;
+            color: white;
+        }
+</style>

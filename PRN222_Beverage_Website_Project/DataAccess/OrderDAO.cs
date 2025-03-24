@@ -57,5 +57,19 @@ namespace PRN222_Beverage_Website_Project.DataAccess
                 .OrderByDescending(o => o.CreatedAt)
                 .ToList();
         }
+
+        public void UpdateStatusOrderByOrderId(int orderId, int idStatusOrder)
+        {
+            var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
+            if (order != null)
+            {
+                order.StatusOrderId = idStatusOrder;
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Không tìm thấy đơn hàng.");
+            }
+        }
     }
 }

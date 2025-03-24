@@ -11,10 +11,13 @@ namespace PRN222_Beverage_Website_Project.Controllers
     public class OrderController : Controller
     {
         private readonly OrderService _orderService;
+        private readonly ConfigDataService _configDataService;
+
 
         public OrderController()
         {
             _orderService = new OrderService();
+            _configDataService = new ConfigDataService();
         }
 
 
@@ -59,6 +62,16 @@ namespace PRN222_Beverage_Website_Project.Controllers
             if (order == null) return NotFound();
 
             return View(order);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "user, sale")]
+        public IActionResult UpdateStatusOrder(int orderId, string statusName)
+        {
+            var statusId = _configDataService.GetStatusOrderIdByStatusOrderName(statusName) ?? 10;
+            _orderService.UpdateStatusOrderByOrderId(orderId, statusId);
+
+            return RedirectToAction("OrderDetails", new { orderId });
         }
     }
 }
