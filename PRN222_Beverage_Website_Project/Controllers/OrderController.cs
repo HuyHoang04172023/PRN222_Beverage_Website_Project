@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PRN222_Beverage_Website_Project.Extensions;
 using PRN222_Beverage_Website_Project.Models;
 using PRN222_Beverage_Website_Project.Services;
 
@@ -13,14 +14,16 @@ namespace PRN222_Beverage_Website_Project.Controllers
         {
             _orderService = new OrderService();
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
-        public IActionResult OrdersOfShop(int shopId)
+        [HttpGet]
+        public IActionResult OrdersOfShop()
         {
-            List< Order > orders = _orderService.GetOrdersByShopId(shopId);
+            Shop shop = HttpContext.Session.GetObjectFromSession<Shop>("shop");
+            List< Order > orders = _orderService.GetOrdersByShopId(shop.ShopId);
 
             return View(orders);
         }
