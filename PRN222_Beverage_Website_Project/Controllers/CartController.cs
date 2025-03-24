@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PRN222_Beverage_Website_Project.Extensions;
 using PRN222_Beverage_Website_Project.Models;
 using PRN222_Beverage_Website_Project.ModelViews;
@@ -9,11 +11,13 @@ namespace PRN222_Beverage_Website_Project.Controllers
     public class CartController : Controller
     {
         private readonly ProductVariantService _productVariantService;
+        private readonly Prn222BeverageWebsiteProjectContext _context;
 
 
         public CartController(IImageService imageService)
         {
             _productVariantService = new ProductVariantService();
+            _context = new Prn222BeverageWebsiteProjectContext();
         }
 
         [HttpGet]
@@ -84,5 +88,73 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
             return Ok(); // Trả về thành công mà không cần reload trang
         }
+
+        [HttpGet]
+        public IActionResult Confirm()
+        {
+            var userId = User.FindFirstValue("UserID");
+            if (userId == null)
+            {
+                return Redirect("/login");
+            }
+            var shoppingCart = HttpContext.Session.GetObjectFromSession<List<ItemCart>>("cart") ?? new List<ItemCart>();
+            return View(shoppingCart);
+        }
+        //var userId = User.FindFirstValue("UserID");
+
+        [HttpPost]
+        public IActionResult Checkout(string orderNote, string phoneNumber, string shippingAddress)
+        {
+            var shoppingCart = HttpContext.Session.GetObjectFromSession<List<ItemCart>>("cart") ?? new List<ItemCart>();
+
+            if (shoppingCart.Count == 0)
+            {
+                return RedirectToAction("Cart");
+            }
+
+            var productVariants = _context.ProductVariants
+                .Where(pv => shoppingCart.Select(c => c.ProductVariantId).Contains(pv.ProductVariantId))
+                .Include(pv => pv.Product) // Lấy Product để truy xuất ShopID
+                .ToList();
+
+            var groupedByShop = shoppingCart
+                .GroupBy(item => productVariants.First(pv => pv.ProductVariantId == item.ProductVariantId).Product.ShopId)
+                .ToList();
+
+            var userId = User.FindFirstValue("UserID");
+            foreach (var group in groupedByShop)
+            {
+                var order = new Order
+                {
+                    UserId = int.Parse(userId),
+                    ShopId = group.Key,
+                    StatusOrderId = 1, // Đơn hàng mới
+                    CreatedAt = DateTime.Now,
+                    OrderNote = orderNote,
+                    PhoneNumber = phoneNumber,
+                    ShippingAddress = shippingAddress
+                };
+
+                _context.Orders.Add(order);
+                _context.SaveChanges(); // Lưu Order để lấy OrderID
+
+                foreach (var item in group)
+                {
+                    OrderItem ot = new OrderItem();
+                    ot.OrderId = order.OrderId;
+                    ot.ProductVariantId = item.ProductVariantId;
+                    ot.OrderItemQuantity = item.Quantity;
+                    ot.OrderItemPrice = item.ProductVariantPrice;
+                    _context.OrderItems.Add(ot);
+                }
+                _context.SaveChanges();
+            }
+
+            // Xóa giỏ hàng sau khi checkout thành công
+            HttpContext.Session.Remove("cart");
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

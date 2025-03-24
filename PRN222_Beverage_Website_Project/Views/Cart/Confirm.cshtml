@@ -1,0 +1,52 @@
+﻿@model List<PRN222_Beverage_Website_Project.ModelViews.ItemCart>
+
+@{
+    ViewBag.Title = "Xác nhận đơn hàng";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Xác nhận đơn hàng</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Kích thước</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Tổng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><img src="@item.ProductImage" alt="@item.ProductName" style="width: 80px; height: 80px; object-fit: cover;"></td>
+                    <td>@item.ProductName</td>
+                    <td>@item.ProductSizeName</td>
+                    <td>@item.ProductVariantPrice.ToString("N0") VNĐ</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.ProductVariantPrice * item.Quantity) VNĐ</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Thông tin đặt hàng</h4>
+    <form method="post" action="@Url.Action("Checkout", "Cart")">
+        <div class="mb-3">
+            <label class="form-label">Ghi chú đơn hàng</label>
+            <textarea name="OrderNote" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Số điện thoại</label>
+            <input type="text" name="PhoneNumber" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Địa chỉ giao hàng</label>
+            <input type="text" name="ShippingAddress" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Thanh toán</button>
+    </form>
+</div>
