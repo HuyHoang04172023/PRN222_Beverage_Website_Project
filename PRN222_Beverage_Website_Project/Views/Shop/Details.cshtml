@@ -1,0 +1,30 @@
+﻿@model Shop
+
+@{
+    Layout = "~/Views/Shared/ManagerLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <!-- Thông tin Shop -->
+    <div class="text-center mb-4">
+        <h2>@Model.ShopName</h2>
+        <p><strong>Địa chỉ:</strong> @Model.ShopAddress</p>
+        <p>@Model.ShopDescription</p>
+    </div>
+
+    <!-- Danh sách sản phẩm -->
+    <div class="row">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-md-4 mb-4">
+                    <div class="card d-flex flex-row">
+                        <img src="@product.ProductImage" class="card-img-left" style="width: 100px; height: 100px; object-fit: cover;" alt="@product.ProductName">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.ProductName</h5>
+                            <p class="card-text">@product.ProductDescription.Substring(0, Math.Min(product.ProductDescription.Length, 100))...</p>
+                        </div>
+                    </div>
+            </div>
+        }
+    </div>
+</div>

@@ -25,6 +25,14 @@ namespace PRN222_Beverage_Website_Project.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "manager")]
+        public IActionResult Shops()
+        {
+            List<Shop> shops = _shopService.GetShops();
+            return View(shops);
+        }
+
+        [HttpGet]
         [Authorize(Roles = "user")]
         public IActionResult Create()
         {
@@ -233,7 +241,26 @@ namespace PRN222_Beverage_Website_Project.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost]
+        [Authorize(Roles = "manager")]
+        public IActionResult UpdateStatusShop2(int shopId, string statusShopName)
+        {
+            int statusId = _configDataService.GetStatusShopIdByStatusShopName(statusShopName) ?? 10;
+            _shopService.UpdateStatusShopByShopId(shopId, statusId);
+
+            return RedirectToAction("Shops");
+        }
+
         public IActionResult Detail(int shopId)
+        {
+            Shop? shop = _shopService.GetShopByShopID(shopId);
+
+            return View(shop);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "manager")]
+        public IActionResult Details(int shopId)
         {
             Shop? shop = _shopService.GetShopByShopID(shopId);
 

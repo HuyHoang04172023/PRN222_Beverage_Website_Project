@@ -1,0 +1,96 @@
+﻿@model List<Shop>
+
+@{
+    Layout = "~/Views/Shared/ManagerLayout.cshtml";
+}
+
+<h2>Danh sách cửa hàng</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Shop ID</th>
+            <th>Tên cửa hàng</th>
+            <th>Hình ảnh</th>
+            <th>Địa chỉ</th>
+            <th>Trạng thái</th>
+            <th>Chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var shop in Model)
+        {
+            var isActive = shop.StatusShop.StatusShopName == "active";
+            <tr>
+                <td>@shop.ShopId</td>
+                <td>@shop.ShopName</td>
+                <td>
+                    <img src="@shop.ShopImage" alt="@shop.ShopName" width="50">
+                </td>
+                <td>@shop.ShopAddress</td>
+                <td>
+                    <form action="@Url.Action("UpdateStatusShop2", "Shop")" method="post" class="status-form">
+                        <input type="hidden" name="shopId" value="@shop.ShopId" />
+                        <input type="hidden" name="statusShopName" value="@(isActive ? "deactive" : "active")" />
+
+                        <label class="switch">
+                            <input type="checkbox" class="status-switch" @(isActive ? "checked" : "") onchange="this.form.submit()">
+                            <span class="slider round"></span>
+                        </label>
+                    </form>
+                </td>
+                <td>
+                    <a href="@Url.Action("Details", "Shop", new { shopId = shop.ShopId })" class="btn btn-info">Xem</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    /* Switch Button */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 22px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 22px;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .slider {
+        background-color: #28a745;
+    }
+
+        input:checked + .slider:before {
+            transform: translateX(18px);
+        }
+</style>

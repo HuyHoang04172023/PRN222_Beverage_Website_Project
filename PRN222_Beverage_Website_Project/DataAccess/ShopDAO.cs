@@ -10,6 +10,12 @@ namespace PRN222_Beverage_Website_Project.DataAccess
         {
             _context = new Prn222BeverageWebsiteProjectContext();
         }
+        public List<Shop> GetShops()
+        {
+            return _context.Shops
+                .Include(s => s.StatusShop)
+                .ToList();
+        }
 
         public void AddShop(Shop shop)
         {

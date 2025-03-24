@@ -10,6 +10,12 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             _dao = new ShopDAO();
         }
+
+        public List<Shop> GetShops()
+        {
+            return _dao.GetShops();
+        }
+
         public void AddShop(Shop shop)
         {
             _dao.AddShop(shop);

@@ -4,6 +4,7 @@ namespace PRN222_Beverage_Website_Project.Repositories
 {
     public interface IShopRepository
     {
+        public List<Shop> GetShops();
         public void AddShop(Shop shop);
         public void UpdateShop(Shop updatedShop);
         public void DeleteShop(int shopId);

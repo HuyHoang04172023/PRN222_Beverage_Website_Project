@@ -10,6 +10,11 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             _repository = new ShopRepository();
         }
+        public List<Shop> GetShops()
+        {
+            return _repository.GetShops();
+        }
+
         public void AddShop(Shop shop)
         {
             _repository.AddShop(shop);
