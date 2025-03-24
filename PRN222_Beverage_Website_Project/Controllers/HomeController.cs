@@ -28,7 +28,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
         [Authorize(Roles = "user")]
         public IActionResult HomeUser()
         {
-            return View();
+            return Redirect("/");
         }
 
         [Authorize(Roles = "sale")]

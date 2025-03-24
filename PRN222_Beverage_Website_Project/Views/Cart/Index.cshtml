@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 
 <div class="container mt-4">
@@ -42,6 +43,11 @@
             }
         </tbody>
     </table>
+
+    <!-- Nút Thanh toán -->
+    <div class="text-end">
+        <a href="@Url.Action("Confirm", "Cart")" class="btn btn-success btn-lg">Thanh toán</a>
+    </div>
 </div>
 
 <script>

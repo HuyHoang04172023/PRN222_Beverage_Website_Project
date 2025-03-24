@@ -285,7 +285,6 @@ namespace PRN222_Beverage_Website_Project.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "sale, manager")]
         public IActionResult Detail(int productId)
         {
             Product? product = _productService.GetProductByProductId(productId);

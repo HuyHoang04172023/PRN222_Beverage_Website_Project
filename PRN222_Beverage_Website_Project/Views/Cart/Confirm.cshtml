@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Xác nhận đơn hàng";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 
 <div class="container mt-4">
@@ -34,19 +35,50 @@
     </table>
 
     <h4>Thông tin đặt hàng</h4>
-    <form method="post" action="@Url.Action("Checkout", "Cart")">
+    <form method="post" action="@Url.Action("Checkout", "Cart")" onsubmit="return validateForm()">
         <div class="mb-3">
             <label class="form-label">Ghi chú đơn hàng</label>
             <textarea name="OrderNote" class="form-control"></textarea>
         </div>
         <div class="mb-3">
             <label class="form-label">Số điện thoại</label>
-            <input type="text" name="PhoneNumber" class="form-control" required>
+            <input type="text" name="PhoneNumber" class="form-control" id="PhoneNumber" required>
+            <small class="text-danger d-none" id="phoneError">Vui lòng nhập số điện thoại hợp lệ.</small>
         </div>
         <div class="mb-3">
             <label class="form-label">Địa chỉ giao hàng</label>
-            <input type="text" name="ShippingAddress" class="form-control" required>
+            <input type="text" name="ShippingAddress" class="form-control" id="ShippingAddress" required>
+            <small class="text-danger d-none" id="addressError">Địa chỉ không được để trống.</small>
         </div>
         <button type="submit" class="btn btn-primary">Thanh toán</button>
     </form>
 </div>
+
+<script>
+    function validateForm() {
+        let phoneInput = document.getElementById("PhoneNumber");
+        let addressInput = document.getElementById("ShippingAddress");
+        let phoneError = document.getElementById("phoneError");
+        let addressError = document.getElementById("addressError");
+        let isValid = true;
+
+        // Kiểm tra số điện thoại (chỉ cho phép số, từ 9-11 ký tự)
+        let phoneRegex = /^[0-9]{9,11}$/;
+        if (!phoneRegex.test(phoneInput.value)) {
+            phoneError.classList.remove("d-none");
+            isValid = false;
+        } else {
+            phoneError.classList.add("d-none");
+        }
+
+        // Kiểm tra địa chỉ không để trống
+        if (addressInput.value.trim() === "") {
+            addressError.classList.remove("d-none");
+            isValid = false;
+        } else {
+            addressError.classList.add("d-none");
+        }
+
+        return isValid;
+    }
+</script>
