@@ -26,7 +26,19 @@ namespace PRN222_Beverage_Website_Project.Controllers
             _productService = new ProductService();
         }
 
+        [HttpGet]
+        [Authorize(Roles = "sale")]
         public IActionResult ProductOfShop()
+        {
+            Shop shop = HttpContext.Session.GetObjectFromSession<Shop>("shop");
+            List<Product> products = _productService.GetProductsByShopId(shop.ShopId);
+
+            return View(products);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "sale")]
+        public IActionResult Products()
         {
             Shop shop = HttpContext.Session.GetObjectFromSession<Shop>("shop");
             List<Product> products = _productService.GetProductsByShopId(shop.ShopId);
@@ -261,6 +273,19 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpPost]
+        [Authorize(Roles = "sale")]
+        public IActionResult UpdateStatusProduct2(int productId, string statusProduct)
+        {
+            int statusId = _configDataService.GetStatusProductIdByStatusProductName(statusProduct) ?? 10;
+            _productService.UpdateStatusProductByProductId(productId, statusId);
+
+            return RedirectToAction("Products");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "sale, manager")]
         public IActionResult Detail(int productId)
         {
             Product? product = _productService.GetProductByProductId(productId);
