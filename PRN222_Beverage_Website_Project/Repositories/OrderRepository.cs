@@ -20,5 +20,15 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             _dao.AddOrderItem(orderItem);
         }
+
+        public List<Order> GetOrdersByShopId(int shopId)
+        {
+            return _dao.GetOrdersByShopId(shopId);
+        }
+
+        public Order? GetOrderByOrderId(int orderId)
+        {
+            return _dao.GetOrderByOrderId(orderId);
+        }
     }
 }

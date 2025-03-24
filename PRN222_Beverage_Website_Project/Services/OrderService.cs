@@ -19,5 +19,14 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             _repository.AddOrderItem(orderItem);
         }
+
+        public List<Order> GetOrdersByShopId(int shopId)
+        {
+            return _repository.GetOrdersByShopId(shopId);
+        }
+        public Order? GetOrderByOrderId(int orderId)
+        {
+            return _repository.GetOrderByOrderId(orderId);
+        }
     }
 }

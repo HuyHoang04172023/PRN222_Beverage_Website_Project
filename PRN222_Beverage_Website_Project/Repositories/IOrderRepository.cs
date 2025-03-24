@@ -6,5 +6,7 @@ namespace PRN222_Beverage_Website_Project.Repositories
     {
         public void AddOrder(Order order);
         public void AddOrderItem(OrderItem orderItem);
+        public List<Order> GetOrdersByShopId(int shopId);
+        public Order? GetOrderByOrderId(int orderId);
     }
 }

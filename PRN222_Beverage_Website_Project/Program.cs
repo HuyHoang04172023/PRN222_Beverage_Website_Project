@@ -69,6 +69,9 @@ app.MapControllerRoute(name: "DeleteShop", pattern: "shop/delete/{shopId}", defa
 app.MapControllerRoute(name: "ApproveShop", pattern: "shop/approve", defaults: new { controller = "Shop", action = "Approve" });
 app.MapControllerRoute(name: "ShopDetail", pattern: "shop/detail/{shopId}", defaults: new { controller = "Shop", action = "Detail" });
 
+//Route for Order
+app.MapControllerRoute(name: "ShopOrder", pattern: "order/{shopId}", defaults: new { controller = "Order", action = "OrdersOfShop" });
+
 //Route for Product
 app.MapControllerRoute(name: "GetProductOfShop", pattern: "product/product-of-shop", defaults: new { controller = "Product", action = "ProductOfShop" });
 app.MapControllerRoute(name: "CreateProduct", pattern: "product/create", defaults: new { controller = "Product", action = "Create" });

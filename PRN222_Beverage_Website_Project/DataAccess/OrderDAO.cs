@@ -1,4 +1,5 @@
-﻿using PRN222_Beverage_Website_Project.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PRN222_Beverage_Website_Project.Models;
 
 namespace PRN222_Beverage_Website_Project.DataAccess
 {
@@ -20,6 +21,29 @@ namespace PRN222_Beverage_Website_Project.DataAccess
         {
             _context.OrderItems.Add(orderItem);
             _context.SaveChanges();
+        }
+
+        public List<Order> GetOrdersByShopId(int shopId)
+        {
+            return _context.Orders
+                .Where(o => o.ShopId == shopId)
+                .Include(o => o.StatusOrder)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.ProductVariant)
+                        .ThenInclude(pv => pv.Product)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToList();
+        }
+
+        public Order? GetOrderByOrderId(int orderId)
+        {
+            return _context.Orders
+                    .Where(o => o.OrderId == orderId)
+                    .Include(o => o.StatusOrder)
+                    .Include(o => o.OrderItems)
+                        .ThenInclude(oi => oi.ProductVariant)
+                            .ThenInclude(pv => pv.Product)
+                    .FirstOrDefault();
         }
     }
 }
