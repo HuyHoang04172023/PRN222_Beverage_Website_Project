@@ -66,12 +66,12 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
         [HttpPost]
         [Authorize(Roles = "user, sale")]
-        public IActionResult UpdateStatusOrder(int orderId, string statusName)
+        public IActionResult UpdateStatusOrderByUser(int orderId, string statusName)
         {
             var statusId = _configDataService.GetStatusOrderIdByStatusOrderName(statusName) ?? 10;
             _orderService.UpdateStatusOrderByOrderId(orderId, statusId);
 
-            return RedirectToAction("OrderDetails", new { orderId });
+            return Redirect("/user/order");
         }
     }
 }

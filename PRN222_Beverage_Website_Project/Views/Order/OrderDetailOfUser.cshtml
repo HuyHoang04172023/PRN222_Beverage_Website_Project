@@ -14,7 +14,7 @@
 
 @if (Model.StatusOrder.StatusOrderName.ToLower() == "pending")
 {
-    <form action="@Url.Action("UpdateStatusOrder", "Order")" method="post">
+    <form action="@Url.Action("UpdateStatusOrderByUser", "Order")" method="post">
         <input type="hidden" name="orderId" value="@Model.OrderId" />
         <input type="hidden" name="statusName" value="cancel" />
         <button type="submit" class="btn btn-danger">Hủy đơn hàng</button>
