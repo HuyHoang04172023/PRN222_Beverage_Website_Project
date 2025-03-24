@@ -138,5 +138,21 @@ namespace PRN222_Beverage_Website_Project.DataAccess
 
             _context.SaveChanges();
         }
+
+        public List<Product> GetTopSellProducts()
+        {
+            return _context.Products
+            .OrderByDescending(p => p.ProductSoldCount)
+            .Take(5)
+            .ToList();
+        }
+
+        public List<Product> GetLatestProducts()
+        {
+            return _context.Products
+            .OrderByDescending(p => p.CreatedAt)
+            .Take(10)
+            .ToList();
+        }
     }
 }

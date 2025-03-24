@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,17 +12,39 @@ namespace PRN222_Beverage_Website_Project.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ShopService _shopService;
+        private readonly ProductService _productService;
+        private readonly Prn222BeverageWebsiteProjectContext _context;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
             _shopService = new ShopService();
+            _productService = new ProductService();
+            _context = new Prn222BeverageWebsiteProjectContext();
         }
 
         public IActionResult Index()
         {
+            ViewBag.TopSellProducts = _productService.GetTopSellProducts();
+            ViewBag.LatestProducts = _productService.GetLatestProducts();
+
             List<Shop>? shops = _shopService.GetShopsByStatusShopName("active");
             return View(shops);
+        }
+
+        public IActionResult Search(string keyword)
+        {
+            if (string.IsNullOrEmpty(keyword))
+            {
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.TopSellProducts = _productService.GetTopSellProducts();
+            ViewBag.LatestProducts = _productService.GetLatestProducts();
+
+            var result = _shopService.SearchShopByShopName(keyword);
+
+            return View("Index", result);
         }
 
         [Authorize(Roles = "user")]

@@ -64,5 +64,15 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             _dao.UpdateApprovedByOfProduct(updatedProduct);
         }
+
+        public List<Product> GetTopSellProducts()
+        {
+            return _dao.GetTopSellProducts();
+        }
+
+        public List<Product> GetLatestProducts()
+        {
+            return _dao.GetLatestProducts();
+        }
     }
 }

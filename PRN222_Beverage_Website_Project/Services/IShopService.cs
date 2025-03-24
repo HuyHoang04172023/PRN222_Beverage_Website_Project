@@ -14,5 +14,6 @@ namespace PRN222_Beverage_Website_Project.Services
         public void UpdateStatusShopByShopId(int shopID, int idStatusShop);
         public void UpdateApprovedByOfShop(Shop updatedShop);
         public List<Shop>? GetShopsByStatusShopName(string statusShopName);
+        public List<Shop> SearchShopByShopName(string keyword);
     }
 }

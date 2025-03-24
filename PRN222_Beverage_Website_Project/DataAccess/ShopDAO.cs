@@ -110,5 +110,12 @@ namespace PRN222_Beverage_Website_Project.DataAccess
                 .Where(s => s.StatusShop.StatusShopName == statusShopName)
                 .ToList();
         }
+
+        public List<Shop> SearchShopByShopName(string keyword)
+        {
+            return _context.Shops
+                .Where(s => s.ShopName.Contains(keyword))
+                .ToList();
+        }
     }
 }

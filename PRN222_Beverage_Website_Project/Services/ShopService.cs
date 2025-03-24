@@ -57,5 +57,10 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             return _repository.GetShopsByStatusShopName(statusShopName);
         }
+
+        public List<Shop> SearchShopByShopName(string keyword)
+        {
+            return _repository.SearchShopByShopName(keyword);
+        }
     }
 }

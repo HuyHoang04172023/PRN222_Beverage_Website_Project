@@ -64,5 +64,15 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             _repository.UpdateApprovedByOfProduct(updatedProduct);
         }
+
+        public List<Product> GetTopSellProducts()
+        {
+            return _repository.GetTopSellProducts();
+        }
+
+        public List<Product> GetLatestProducts()
+        {
+            return _repository.GetLatestProducts();
+        }
     }
 }

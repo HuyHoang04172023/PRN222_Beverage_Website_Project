@@ -56,5 +56,10 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             return _dao.GetShopsByStatusShopName(statusShopName);
         }
+
+        public List<Shop> SearchShopByShopName(string keyword)
+        {
+            return _dao.SearchShopByShopName(keyword);
+        }
     }
 }

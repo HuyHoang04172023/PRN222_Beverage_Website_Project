@@ -1,27 +1,143 @@
 ﻿@model List<Shop>
- 
+
 @{
     Layout = "~/Views/Shared/HomeLayout.cshtml";
     ViewBag.Title = "Trang chủ";
+    var topProducts = ViewBag.TopSellProducts as List<PRN222_Beverage_Website_Project.Models.Product>;
+    var latestProducts = ViewBag.LatestProducts as List<PRN222_Beverage_Website_Project.Models.Product>;
 }
 
-<div class="container mt-4">
-    <div class="row">
-        @foreach (var shop in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <a href="/Shop/Detail/@shop.ShopId" class="text-decoration-none text-dark">
-                    <div class="card">
-                        <img src="@shop.ShopImage" class="card-img-top" alt="@shop.ShopName">
-                        <div class="card-body">
-                            <h5 class="card-title">@shop.ShopName</h5>
-                            <p class="card-text"><strong>Địa chỉ:</strong> @shop.ShopAddress</p>
-                            <p class="card-text">@shop.ShopDescription.Substring(0, Math.Min(shop.ShopDescription.Length, 100))...</p>
-                        </div>
+<!-- Hiển thị top 5 sản phẩm bán chạy -->
+<div class="container mt-5">
+    <h2 class="text-center">🔥 Top 5 sản phẩm bán chạy</h2>
+    <div class="swiper-container top-sell-slider">
+        <div class="swiper-wrapper">
+            @if (topProducts != null && topProducts.Any())
+            {
+                @foreach (var product in topProducts)
+                {
+                    <div class="swiper-slide">
+                        <a href="/Product/Detail/@product.ProductId" class="text-decoration-none text-dark">
+                            <div class="card">
+                                <img src="@product.ProductImage" class="card-img-top" alt="@product.ProductName">
+                                <div class="card-body">
+                                    <h5 class="card-title">@product.ProductName</h5>
+                                    <p class="card-text"><strong>Đã bán:</strong> @(product.ProductSoldCount ?? 0)</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                </a>
-            </div>
+                }
+            }
+            else
+            {
+                <p class="text-center">Không có sản phẩm nào.</p>
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</div>
+
+<!-- Hiển thị 10 sản phẩm mới nhất -->
+<div class="container mt-5">
+    <h2 class="text-center">🆕 Sản phẩm mới nhất</h2>
+    <div class="swiper-container latest-product-slider">
+        <div class="swiper-wrapper">
+            @if (latestProducts != null && latestProducts.Any())
+            {
+                @foreach (var product in latestProducts)
+                {
+                    <div class="swiper-slide">
+                        <a href="/Product/Detail/@product.ProductId" class="text-decoration-none text-dark">
+                            <div class="card">
+                                <img src="@product.ProductImage" class="card-img-top" alt="@product.ProductName">
+                                <div class="card-body">
+                                    <h5 class="card-title">@product.ProductName</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center">Không có sản phẩm nào.</p>
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</div>
+
+<!-- Hiển thị danh sách cửa hàng -->
+<div class="container mt-4">
+    <h2 class="text-center">🏪 Danh sách cửa hàng</h2>
+
+    <!-- Ô tìm kiếm cửa hàng -->
+    <form method="get" action="@Url.Action("Search", "Home")" class="mb-4 d-flex">
+        <input type="text" name="keyword" class="form-control me-2" placeholder="Nhập tên cửa hàng..." required>
+        <button type="submit" class="btn btn-primary">🔍 Tìm Kiếm</button>
+    </form>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var shop in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <a href="/Shop/Detail/@shop.ShopId" class="text-decoration-none text-dark">
+                        <div class="card">
+                            <img src="@shop.ShopImage" class="card-img-top" alt="@shop.ShopName">
+                            <div class="card-body">
+                                <h5 class="card-title">@shop.ShopName</h5>
+                                <p class="card-text"><strong>Địa chỉ:</strong> @shop.ShopAddress</p>
+                                <p class="card-text">@shop.ShopDescription.Substring(0, Math.Min(shop.ShopDescription.Length, 100))...</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center">Không tìm thấy cửa hàng nào.</p>
         }
     </div>
 </div>
 
+<!-- Thư viện Swiper.js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        new Swiper('.top-sell-slider', {
+            loop: true,
+            slidesPerView: 3,
+            spaceBetween: 20,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false
+            },
+            navigation: {
+                nextEl: '.top-sell-slider .swiper-button-next',
+                prevEl: '.top-sell-slider .swiper-button-prev'
+            }
+        });
+
+        new Swiper('.latest-product-slider', {
+            loop: true,
+            slidesPerView: 3,
+            spaceBetween: 20,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false
+            },
+            navigation: {
+                nextEl: '.latest-product-slider .swiper-button-next',
+                prevEl: '.latest-product-slider .swiper-button-prev'
+            }
+        });
+    });
+</script>

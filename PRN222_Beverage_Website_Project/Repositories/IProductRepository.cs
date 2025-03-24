@@ -16,5 +16,7 @@ namespace PRN222_Beverage_Website_Project.Repositories
         public List<Product>? GetProductsPending();
         public void UpdateStatusProductByProductId(int productId, int idStatusProduct);
         public void UpdateApprovedByOfProduct(Product updatedProduct);
+        public List<Product> GetTopSellProducts();
+        public List<Product> GetLatestProducts();
     }
 }
