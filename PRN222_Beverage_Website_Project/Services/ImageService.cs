@@ -3,7 +3,7 @@
     public class ImageService : IImageService
     {
         private readonly IWebHostEnvironment _environment;
-        private readonly string[] _allowedExtensions = { ".png", ".webp" }; // Các định dạng cho phép
+        private readonly string[] _allowedExtensions = { ".png", ".webp", ".jpg" }; // Các định dạng cho phép
 
         public ImageService(IWebHostEnvironment environment)
         {
