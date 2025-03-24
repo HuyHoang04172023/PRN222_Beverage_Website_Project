@@ -27,7 +27,7 @@
                 <td>@order.OrderItems.Sum(oi => oi.OrderItemQuantity)</td>
                 <td>@totalAmount.ToString("N0") VNĐ</td>
                 <td>
-                    <form action="@Url.Action("OrderDetails", "Order")" method="post">
+                    <form action="@Url.Action("OrderDetailOfShop", "Order")" method="post">
                         <input type="hidden" name="orderId" value="@order.OrderId" />
                         <button type="submit" class="btn btn-primary">Chi tiết</button>
                     </form>

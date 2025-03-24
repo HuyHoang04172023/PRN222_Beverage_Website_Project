@@ -25,7 +25,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult OrderDetails(int orderId)
+        public IActionResult OrderDetailOfShop(int orderId)
         {
             Order? order = _orderService.GetOrderByOrderId(orderId);
 
