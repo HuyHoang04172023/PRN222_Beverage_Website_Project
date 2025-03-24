@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PRN222_Beverage_Website_Project.Extensions;
@@ -12,12 +13,15 @@ namespace PRN222_Beverage_Website_Project.Controllers
     {
         private readonly ProductVariantService _productVariantService;
         private readonly Prn222BeverageWebsiteProjectContext _context;
-
+        private readonly ConfigDataService _configDataService;
+        private readonly OrderService _orderService;
 
         public CartController(IImageService imageService)
         {
             _productVariantService = new ProductVariantService();
             _context = new Prn222BeverageWebsiteProjectContext();
+            _configDataService = new ConfigDataService();
+            _orderService = new OrderService();
         }
 
         [HttpGet]
@@ -124,19 +128,15 @@ namespace PRN222_Beverage_Website_Project.Controllers
             var userId = User.FindFirstValue("UserID");
             foreach (var group in groupedByShop)
             {
-                var order = new Order
-                {
-                    UserId = int.Parse(userId),
-                    ShopId = group.Key,
-                    StatusOrderId = 1, // Đơn hàng mới
-                    CreatedAt = DateTime.Now,
-                    OrderNote = orderNote,
-                    PhoneNumber = phoneNumber,
-                    ShippingAddress = shippingAddress
-                };
-
-                _context.Orders.Add(order);
-                _context.SaveChanges(); // Lưu Order để lấy OrderID
+                Order order = new Order();
+                order.UserId = int.Parse(userId);
+                order.ShopId = group.Key;
+                order.StatusOrderId = _configDataService.GetStatusOrderIdByStatusOrderName("pending") ?? 10;
+                order.CreatedAt = DateTime.Now;
+                order.OrderNote = orderNote;
+                order.PhoneNumber = phoneNumber;
+                order.ShippingAddress = shippingAddress;
+                _orderService.AddOrder(order); // Lưu Order để lấy OrderID
 
                 foreach (var item in group)
                 {
@@ -145,12 +145,10 @@ namespace PRN222_Beverage_Website_Project.Controllers
                     ot.ProductVariantId = item.ProductVariantId;
                     ot.OrderItemQuantity = item.Quantity;
                     ot.OrderItemPrice = item.ProductVariantPrice;
-                    _context.OrderItems.Add(ot);
+                    _orderService.AddOrderItem(ot);
                 }
-                _context.SaveChanges();
             }
 
-            // Xóa giỏ hàng sau khi checkout thành công
             HttpContext.Session.Remove("cart");
 
             return RedirectToAction("Index");

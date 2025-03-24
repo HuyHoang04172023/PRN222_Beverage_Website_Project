@@ -34,6 +34,14 @@ namespace PRN222_Beverage_Website_Project.DataAccess
                    .FirstOrDefault();
         }
 
+        public int? GetStatusOrderIdByStatusOrderName(string statusOrderName)
+        {
+            return _context.StatusOrders
+                   .Where(r => r.StatusOrderName == statusOrderName)
+                   .Select(r => r.StatusOrderId)
+                   .FirstOrDefault();
+        }
+
         public List<ProductSize> GetProductSizes()
         {
             return _context.ProductSizes.ToList();

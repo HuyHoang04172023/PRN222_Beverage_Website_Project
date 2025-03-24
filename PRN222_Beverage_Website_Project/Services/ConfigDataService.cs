@@ -23,7 +23,10 @@ namespace PRN222_Beverage_Website_Project.Services
         {
             return _repository.GetStatusProductIdByStatusProductName(statusProductName);
         }
-
+        public int? GetStatusOrderIdByStatusOrderName(string statusOrderName)
+        {
+            return _repository.GetStatusOrderIdByStatusOrderName(statusOrderName);
+        }
         public List<ProductSize> GetProductSizes()
         {
             return _repository.GetProductSizes();

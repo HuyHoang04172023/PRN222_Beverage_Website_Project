@@ -26,6 +26,10 @@ namespace PRN222_Beverage_Website_Project.Repositories
         {
             return _dao.GetStatusProductIdByStatusProductName(statusProductName);
         }
+        public int? GetStatusOrderIdByStatusOrderName(string statusOrderName)
+        {
+            return _dao.GetStatusOrderIdByStatusOrderName(statusOrderName);
+        }
 
         public List<ProductSize> GetProductSizes()
         {

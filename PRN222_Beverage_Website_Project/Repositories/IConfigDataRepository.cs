@@ -7,6 +7,7 @@ namespace PRN222_Beverage_Website_Project.Repositories
         public int? GetRoleIdByRoleName(string roleName);
         public int? GetStatusShopIdByStatusShopName(string statusShopName);
         public int? GetStatusProductIdByStatusProductName(string statusProductName);
+        public int? GetStatusOrderIdByStatusOrderName(string statusOrderName);
         public List<ProductSize> GetProductSizes();
     }
 }
