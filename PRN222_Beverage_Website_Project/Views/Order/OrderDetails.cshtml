@@ -1,5 +1,8 @@
 ﻿@model Order
-
+@{
+    Layout = "~/Views/Shared/SaleLayout.cshtml";
+    ViewBag.Title = "Chi tiết đơn hàng";
+}
 <h2>Chi tiết đơn hàng #@Model.OrderId</h2>
 <p><strong>Ngày tạo:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
 <p><strong>Trạng thái:</strong> @Model.StatusOrder.StatusOrderName</p>

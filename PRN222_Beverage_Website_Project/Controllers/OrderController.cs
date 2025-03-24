@@ -14,10 +14,6 @@ namespace PRN222_Beverage_Website_Project.Controllers
         {
             _orderService = new OrderService();
         }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
 
         [HttpGet]
         public IActionResult OrdersOfShop()

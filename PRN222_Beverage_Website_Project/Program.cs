@@ -70,7 +70,7 @@ app.MapControllerRoute(name: "ApproveShop", pattern: "shop/approve", defaults: n
 app.MapControllerRoute(name: "ShopDetail", pattern: "shop/detail/{shopId}", defaults: new { controller = "Shop", action = "Detail" });
 
 //Route for Order
-app.MapControllerRoute(name: "ShopOrder", pattern: "order", defaults: new { controller = "Order", action = "OrdersOfShop" });
+app.MapControllerRoute(name: "ShopOrder", pattern: "shop/order", defaults: new { controller = "Order", action = "OrdersOfShop" });
 
 //Route for Product
 app.MapControllerRoute(name: "GetProductOfShop", pattern: "product/product-of-shop", defaults: new { controller = "Product", action = "ProductOfShop" });
