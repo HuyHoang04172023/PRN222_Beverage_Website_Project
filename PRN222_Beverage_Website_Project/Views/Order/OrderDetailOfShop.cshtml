@@ -2,6 +2,7 @@
 @{
     Layout = "~/Views/Shared/SaleLayout.cshtml";
     ViewBag.Title = "Chi tiết đơn hàng";
+    bool isDisabled = Model.StatusOrder.StatusOrderName == "success" || Model.StatusOrder.StatusOrderName == "cancel";
 }
 <h2>Chi tiết đơn hàng #@Model.OrderId</h2>
 
@@ -10,7 +11,7 @@
     <input type="hidden" name="orderId" value="@Model.OrderId" />
 
     <label for="statusName"><strong>Cập nhật trạng thái đơn hàng:</strong></label>
-    <select name="statusName" id="statusName" class="form-control">
+    <select name="statusName" id="statusName" class="form-control" @(isDisabled ? "disabled" : "")>
         @foreach (var status in ViewBag.StatusOrders)
         {
             var isSelected = Model.StatusOrder.StatusOrderName == status.StatusOrderName ? true : false;
@@ -18,7 +19,7 @@
         }
     </select>
 
-    <button type="submit" class="btn btn-primary mt-2">Cập nhật trạng thái</button>
+    <button type="submit" class="btn btn-primary mt-2" @(isDisabled ? "disabled" : "")>Cập nhật trạng thái</button>
 </form>
 
 <p><strong>Ngày tạo:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>

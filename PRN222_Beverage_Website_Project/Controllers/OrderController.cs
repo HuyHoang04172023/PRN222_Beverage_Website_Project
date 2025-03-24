@@ -12,12 +12,14 @@ namespace PRN222_Beverage_Website_Project.Controllers
     {
         private readonly OrderService _orderService;
         private readonly ConfigDataService _configDataService;
+        private readonly Prn222BeverageWebsiteProjectContext _context;
 
 
         public OrderController()
         {
             _orderService = new OrderService();
             _configDataService = new ConfigDataService();
+            _context = new Prn222BeverageWebsiteProjectContext();
         }
 
 
@@ -77,6 +79,30 @@ namespace PRN222_Beverage_Website_Project.Controllers
         {
             var statusId = _configDataService.GetStatusOrderIdByStatusOrderName(statusName) ?? 10;
             _orderService.UpdateStatusOrderByOrderId(orderId, statusId);
+
+            if (statusName.ToLower() == "success")
+            {
+                var order = _context.Orders
+                    .Where(o => o.OrderId == orderId)
+                    .Include(o => o.OrderItems)
+                        .ThenInclude(oi => oi.ProductVariant)
+                            .ThenInclude(pv => pv.Product)
+                    .FirstOrDefault();
+
+                if (order != null)
+                {
+                    foreach (var item in order.OrderItems)
+                    {
+                        var product = item.ProductVariant.Product;
+                        if (product != null)
+                        {
+                            product.ProductSoldCount = (product.ProductSoldCount ?? 0) + item.OrderItemQuantity;
+                        }
+                    }
+
+                    _context.SaveChanges();
+                }
+            }
 
             return Redirect("/shop/order");
         }
