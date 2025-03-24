@@ -51,22 +51,6 @@ namespace PRN222_Beverage_Website_Project.Controllers
         [Authorize(Roles = "sale")]
         public async Task<IActionResult> CreateAsync(ProductViewModel model, IFormFile productImageFile)
         {
-            //Debug
-            Console.WriteLine($"productImageFile: {productImageFile}");
-            // In thông tin của model ra console
-            Console.WriteLine("Tên sản phẩm: " + model.ProductName);
-            Console.WriteLine("Mô tả sản phẩm: " + model.ProductDescription);
-            Console.WriteLine("Hình ảnh: " + model.ProductImage);
-
-            if (model.ProductVariants != null)
-            {
-                foreach (var variant in model.ProductVariants)
-                {
-                    Console.WriteLine($"Biến thể - Giá: {variant.ProductVariantPrice}, Kích thước ID: {variant.ProductSizeId}");
-                }
-            }
-            //End Debug
-
             ModelState.Remove("ProductImage");
             ModelState.Remove("productImageFile");
 
@@ -76,16 +60,6 @@ namespace PRN222_Beverage_Website_Project.Controllers
                     .ToList();
             if (!ModelState.IsValid)
             {
-                //Debug
-                foreach (var state in ModelState)
-                {
-                    foreach (var error in state.Value.Errors)
-                    {
-                        Console.WriteLine($"Lỗi tại {state.Key}: {error.ErrorMessage}");
-                    }
-                }
-                //End Debug
-
                 return View(model);
             }
 
@@ -183,22 +157,6 @@ namespace PRN222_Beverage_Website_Project.Controllers
         [Authorize(Roles = "sale")]
         public async Task<IActionResult> UpdateAsync(ProductViewModel model, IFormFile productImageFile)
         {
-            //Debug
-            Console.WriteLine($"productImageFile: {productImageFile}");
-            // In thông tin của model ra console
-            Console.WriteLine("Tên sản phẩm: " + model.ProductName);
-            Console.WriteLine("Mô tả sản phẩm: " + model.ProductDescription);
-            Console.WriteLine("Hình ảnh: " + model.ProductImage);
-
-            if (model.ProductVariants != null)
-            {
-                foreach (var variant in model.ProductVariants)
-                {
-                    Console.WriteLine($"Biến thể - Giá: {variant.ProductVariantPrice}, Kích thước ID: {variant.ProductSizeId}");
-                }
-            }
-            //End Debug
-
             ModelState.Remove("ProductImage");
             ModelState.Remove("productImageFile");
 
@@ -208,19 +166,8 @@ namespace PRN222_Beverage_Website_Project.Controllers
                     .ToList();
             if (!ModelState.IsValid)
             {
-                //Debug
-                foreach (var state in ModelState)
-                {
-                    foreach (var error in state.Value.Errors)
-                    {
-                        Console.WriteLine($"Lỗi tại {state.Key}: {error.ErrorMessage}");
-                    }
-                }
-                //End Debug
-
                 return View(model);
             }
-
 
             //VariantError
             HashSet<int> sizeIds = new HashSet<int>();

@@ -104,7 +104,6 @@ namespace PRN222_Beverage_Website_Project.Controllers
             var shoppingCart = HttpContext.Session.GetObjectFromSession<List<ItemCart>>("cart") ?? new List<ItemCart>();
             return View(shoppingCart);
         }
-        //var userId = User.FindFirstValue("UserID");
 
         [HttpPost]
         public IActionResult Checkout(string orderNote, string phoneNumber, string shippingAddress)
