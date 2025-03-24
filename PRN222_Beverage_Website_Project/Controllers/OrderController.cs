@@ -44,7 +44,6 @@ namespace PRN222_Beverage_Website_Project.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "user")]
         public IActionResult OrdersOfUser()
         {
             var userId = User.FindFirstValue("UserID");
@@ -55,7 +54,6 @@ namespace PRN222_Beverage_Website_Project.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "user")]
         public IActionResult OrderDetailOfUser(int orderId)
         {
             Order? order = _orderService.GetOrderByOrderId(orderId);
