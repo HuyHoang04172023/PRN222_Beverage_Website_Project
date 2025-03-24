@@ -74,9 +74,16 @@
 <div class="container mt-4">
     <h2 class="text-center">🏪 Danh sách cửa hàng</h2>
 
-    <!-- Ô tìm kiếm cửa hàng -->
+    <!-- Form tìm kiếm & filter -->
     <form method="get" action="@Url.Action("Search", "Home")" class="mb-4 d-flex">
-        <input type="text" name="keyword" class="form-control me-2" placeholder="Nhập tên cửa hàng..." required>
+        <input type="text" name="keyword" class="form-control me-2" placeholder="Nhập tên cửa hàng..." value="@ViewBag.Keyword">
+
+        <select name="city" class="form-select me-2">
+            <option value="">-- Chọn thành phố --</option>
+            <option value="Hà Nội">Hà Nội</option>
+            <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+        </select>
+
         <button type="submit" class="btn btn-primary">🔍 Tìm Kiếm</button>
     </form>
 

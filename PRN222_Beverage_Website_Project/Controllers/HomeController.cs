@@ -32,19 +32,26 @@ namespace PRN222_Beverage_Website_Project.Controllers
             return View(shops);
         }
 
-        public IActionResult Search(string keyword)
+        public IActionResult Search(string keyword, string city)
         {
-            if (string.IsNullOrEmpty(keyword))
+            var shops = _context.Shops.AsQueryable();
+
+            if (!string.IsNullOrEmpty(keyword))
             {
-                return RedirectToAction("Index");
+                shops = shops.Where(s => s.ShopName.Contains(keyword));
+            }
+
+            if (!string.IsNullOrEmpty(city))
+            {
+                shops = shops.Where(s => s.ShopAddress.Contains(city));
             }
 
             ViewBag.TopSellProducts = _productService.GetTopSellProducts();
             ViewBag.LatestProducts = _productService.GetLatestProducts();
+            ViewBag.Keyword = keyword;
+            ViewBag.SelectedCity = city;
 
-            var result = _shopService.SearchShopByShopName(keyword);
-
-            return View("Index", result);
+            return View("Index", shops.ToList());
         }
 
         [Authorize(Roles = "user")]
