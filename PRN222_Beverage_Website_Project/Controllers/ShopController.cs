@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PRN222_Beverage_Website_Project.Extensions;
 using PRN222_Beverage_Website_Project.Models;
 using PRN222_Beverage_Website_Project.ModelViews;
 using PRN222_Beverage_Website_Project.Services;
@@ -99,12 +100,17 @@ namespace PRN222_Beverage_Website_Project.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user, sale")]
         public IActionResult Update(int shopId)
         {
             var userId = User.FindFirstValue("UserID");
+            if (shopId == 0)
+            {
+                Shop shopSession = HttpContext.Session.GetObjectFromSession<Shop>("shop");
+                shopId = shopSession.ShopId;
+            }
             Shop shop = _shopService.GetShopByShopID(shopId);
-
+            
             if (shop == null)
             {
                 return NotFound("Cửa hàng không tồn tại.");
@@ -128,7 +134,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user, sale")]
         public async Task<IActionResult> Update(ShopViewModel shopView, IFormFile shopImageFile)
         {
             ModelState.Remove("ShopImage");
@@ -163,7 +169,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
                     shop.ShopDescription = shopView.ShopDescription;
 
                     _shopService.UpdateShop(shop);
-                    return Redirect("/user");
+                    return Redirect("/");
                 }
                 catch (ArgumentException ex)
                 {
