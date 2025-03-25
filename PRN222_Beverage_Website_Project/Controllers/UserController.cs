@@ -132,6 +132,7 @@ namespace PRN222_Beverage_Website_Project.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("cart");
             return RedirectToAction("Login");
         }
 
